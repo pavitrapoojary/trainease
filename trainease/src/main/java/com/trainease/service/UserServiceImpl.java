@@ -70,14 +70,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String deleteUser(String emailId) {
+    public String deleteUserByEmailId(String emailId) {
         if(userRepository.findById(emailId).isPresent()){
             userRepository.deleteById(emailId);
             return "User "+emailId+" deleted successfully!";
         }
         return "User "+emailId+" does not exist.";
     }
-
-
 
 }

@@ -20,10 +20,10 @@ class UserServiceTest {
     private UserServiceImpl userService = new UserServiceImpl(userRepository);
 
     @Test
-    void getAllUserDetailsNoOptionalParam() {
-        User user1 = new User("test1@gmail.com", "test1", "ADMIN", null);
-        User user2 = new User("test2@gmail.com", "test2", "TRAINEE", "B1");
-        User user3 = new User("test3@gmail.com", "test3", "TRAINEE", "B2");
+    void getAllUsersNoParam() {
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers(null, null);
@@ -31,10 +31,10 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUserDetailsByRole() {
-        User user1 = new User("test1@gmail.com", "test1", "ADMIN", null);
-        User user2 = new User("test2@gmail.com", "test2", "TRAINEE", "B1");
-        User user3 = new User("test3@gmail.com", "test3", "TRAINEE", "B2");
+    void getAllUsersByRole() {
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers("ADMIN", null);
@@ -43,10 +43,10 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUserDetailsByBatchId() {
-        User user1 = new User("test1@gmail.com", "test1", "ADMIN", null);
-        User user2 = new User("test2@gmail.com", "test2", "TRAINEE", "B1");
-        User user3 = new User("test3@gmail.com", "test3", "TRAINEE", "B2");
+    void getAllUsersByBatchId() {
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers(null, "B1");
@@ -55,10 +55,10 @@ class UserServiceTest {
     }
 
     @Test
-    void getAllUserDetailsByRoleAndBatchId() {
-        User user1 = new User("test1@gmail.com", "test1", "ADMIN", null);
-        User user2 = new User("test2@gmail.com", "test2", "TRAINEE", "B1");
-        User user3 = new User("test3@gmail.com", "test3", "TRAINEE", "B2");
+    void getAllUsersByRoleAndBatchId() {
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers("TRAINEE", "B2");
@@ -68,7 +68,7 @@ class UserServiceTest {
 
     @Test
     void getUserByEmailIdUserExists() {
-        User expectedUser = new User("test@gmail.com", "test", "ADMIN", null);
+        User expectedUser = User.builder().emailId("test@gmail.com").name("test").role("ADMIN").build();
         when(userRepository.findById("test@gmail.com")).thenReturn(Optional.of(expectedUser));
         User actualUser = userService.getUserByEmailId("test@gmail.com");
         assertNotNull(actualUser);
@@ -86,7 +86,7 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        User newUser = new User("p@gmail.com", "test", "ADMIN", null);
+        User newUser = User.builder().emailId("p@gmail.com").name("test").role("ADMIN").build();
         when(userRepository.save(newUser)).thenReturn(newUser);
         User createdUser = userService.createUser(newUser);
         assertNotNull(createdUser);
@@ -98,8 +98,8 @@ class UserServiceTest {
     @Test
     void updateUserWhenUserExists() {
         String emailId = "test@gmail.com";
-        User existingUser = new User(emailId, "test", "ADMIN", null);
-        User updatedUser = new User(emailId, "testUpdated", "ADMIN", null);
+        User existingUser = User.builder().emailId(emailId).name("test").role("ADMIN").build();
+        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role("ADMIN").build();
         when(userRepository.findById(emailId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
         String actualResult = userService.updateUser(updatedUser);
@@ -111,7 +111,7 @@ class UserServiceTest {
     @Test
     void updateUserWhenUserDoesNotExist() {
         String emailId = "test@gmail.com";
-        User updatedUser = new User(emailId, "testUpdated", "ADMIN", null);
+        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role("ADMIN").build();
         when(userRepository.findById(emailId)).thenReturn(Optional.empty());
         String actualResult = userService.updateUser(updatedUser);
         assertEquals("User " + emailId + " does not exist.", actualResult);
@@ -119,20 +119,20 @@ class UserServiceTest {
     }
 
     @Test
-    void deleteUserWhenUserExists() {
+    void deleteUserByEmailIdWhenUserExists() {
         String emailId = "test@gmail.com";
-        User user = new User(emailId, "test", "ADMIN", null);
+        User user = User.builder().emailId(emailId).name("test").role("ADMIN").build();
         when(userRepository.findById(emailId)).thenReturn(Optional.of(user));
-        String actualResult = userService.deleteUser(emailId);
+        String actualResult = userService.deleteUserByEmailId(emailId);
         assertEquals("User " + emailId + " deleted successfully!", actualResult);
         verify(userRepository).deleteById(emailId);
     }
 
     @Test
-    void deleteUserWhenUserDoesNotExist() {
+    void deleteUserByEmailIdWhenUserDoesNotExist() {
         String emailId = "test@gmail.com";
         when(userRepository.findById(emailId)).thenReturn(Optional.empty());
-        String actualResult = userService.deleteUser(emailId);
+        String actualResult = userService.deleteUserByEmailId(emailId);
         assertEquals("User " + emailId + " does not exist.", actualResult);
         verify(userRepository, never()).deleteById(emailId);
     }

@@ -2,7 +2,6 @@ package com.trainease.service;
 
 import com.trainease.entity.BatchCourses;
 import com.trainease.entity.Course;
-
 import java.util.List;
 
 public interface CourseService {
@@ -11,4 +10,5 @@ public interface CourseService {
     List<BatchCourses> getAllBatchDetails();
 
     Course createCourse(Course course);
+    String deleteCourseByCourseId(String courseId);
 }

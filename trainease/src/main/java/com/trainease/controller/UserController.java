@@ -36,8 +36,8 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{emailId}")
-    public String deleteUser(@PathVariable String emailId){
-        return this.userService.deleteUser(emailId);
+    public String deleteUserByEmailId(@PathVariable String emailId){
+        return this.userService.deleteUserByEmailId(emailId);
     }
 
 }

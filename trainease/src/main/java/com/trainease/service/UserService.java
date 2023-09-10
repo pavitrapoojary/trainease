@@ -1,7 +1,5 @@
 package com.trainease.service;
-
 import com.trainease.entity.User;
-
 import java.util.List;
 
 public interface UserService {
@@ -9,5 +7,5 @@ public interface UserService {
     User getUserByEmailId(String emailId);
     User createUser(User user);
     String updateUser(User user);
-    String deleteUser(String emailId);
+    String deleteUserByEmailId(String emailId);
 }

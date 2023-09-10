@@ -15,7 +15,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
@@ -35,31 +37,19 @@ class UserControllerTest {
     }
 
     @Test
-    void getAllUsers() throws Exception {
-        User user1 = new User("test1@gmail.com","test1","ADMIN",null);
-        User user2 = new User("test2@gmail.com","test2","TRAINEE","B1");
-        List<User>userList = Arrays.asList(user1,user2);
-        when(userService.getAllUsers(null,null)).thenReturn(userList);
+    void getAllUsersNoParam() throws Exception {
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        List<User> userList = Arrays.asList(user1, user2);
+        when(userService.getAllUsers(null, null)).thenReturn(userList);
         MvcResult responseResult = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        assertEquals(200,responseResult.getResponse().getStatus());
+        String responseBody = responseResult.getResponse().getContentAsString();
+        assertEquals(200, responseResult.getResponse().getStatus());
+        assertThat(responseBody).contains(user1.getEmailId(), user2.getEmailId());
+        verify(userService).getAllUsers(null, null);
     }
 
-    @Test
-    void getUserByEmailId() {
-    }
-
-    @Test
-    void createUser() {
-    }
-
-    @Test
-    void updateUser() {
-    }
-
-    @Test
-    void deleteUser() {
-    }
 }

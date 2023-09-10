@@ -5,7 +5,6 @@ import com.trainease.entity.Course;
 import com.trainease.repository.CourseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +44,15 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public Course createCourse(Course course) {
         return courseRepository.save(course);
+    }
+
+    @Override
+    public String deleteCourseByCourseId(String courseId) {
+        if(courseRepository.findById(courseId).isPresent()){
+            courseRepository.deleteById(courseId);
+            return "Course ID : "+courseId+" has been deleted successfully!";
+        }
+        return "Course ID : "+courseId+" does not exist.";
     }
 
 
