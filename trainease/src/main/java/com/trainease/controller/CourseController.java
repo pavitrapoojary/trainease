@@ -1,25 +1,26 @@
 package com.trainease.controller;
 
-import com.trainease.entity.BatchCourses;
+import com.trainease.entity.BatchWiseCourses;
 import com.trainease.entity.Course;
 import com.trainease.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 public class CourseController {
     @Autowired
-    private CourseService courseService;
+    CourseService courseService;
 
     @GetMapping("/{batchId}/courses")
     public List<Course> getCoursesByBatchId(@PathVariable String batchId) {
         return this.courseService.getCoursesByBatchId(batchId);
     }
 
-    @GetMapping("/batchCourses")
-    public List<BatchCourses> getAllBatchDetails() {
-        return this.courseService.getAllBatchDetails();
+    @GetMapping("/batch/courses")
+    public List<BatchWiseCourses> getAllBatchWiseCourses() {
+        return this.courseService.getAllBatchWiseCourses();
     }
 
     @PostMapping("/course")
@@ -28,7 +29,7 @@ public class CourseController {
     }
 
     @DeleteMapping("/course/{courseId}")
-    public String deleteCourseByCourseId(@PathVariable String courseId){
+    public String deleteCourseByCourseId(@PathVariable String courseId) {
         return this.courseService.deleteCourseByCourseId(courseId);
     }
 

@@ -4,13 +4,14 @@ import com.trainease.entity.User;
 import com.trainease.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @GetMapping("/users")
     public List<User> getAllUsers(
@@ -26,17 +27,17 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public User createUser(@RequestBody User user){
+    public User createUser(@RequestBody User user) {
         return this.userService.createUser(user);
     }
 
     @PutMapping("/user")
-    public String updateUser(@RequestBody User user){
+    public String updateUser(@RequestBody User user) {
         return this.userService.updateUser(user);
     }
 
     @DeleteMapping("/user/{emailId}")
-    public String deleteUserByEmailId(@PathVariable String emailId){
+    public String deleteUserByEmailId(@PathVariable String emailId) {
         return this.userService.deleteUserByEmailId(emailId);
     }
 

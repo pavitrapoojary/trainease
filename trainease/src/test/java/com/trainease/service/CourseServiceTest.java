@@ -1,6 +1,6 @@
 package com.trainease.service;
 
-import com.trainease.entity.BatchCourses;
+import com.trainease.entity.BatchWiseCourses;
 import com.trainease.entity.Course;
 import com.trainease.repository.CourseRepository;
 import org.junit.jupiter.api.Test;
@@ -38,8 +38,8 @@ class CourseServiceTest {
         Course course2 = Course.builder().courseId("C4").batchId("B2").courseName("javascript").build();
         List<Course>courseList = Arrays.asList(course,course1,course2);
         when(courseRepository.findAll()).thenReturn(courseList);
-        List<BatchCourses> actualBatchCourses = courseService.getAllBatchDetails();
-        assertEquals(2,actualBatchCourses.size());
+        List<BatchWiseCourses> actualBatchCoursWises = courseService.getAllBatchWiseCourses();
+        assertEquals(2, actualBatchCoursWises.size());
         verify(courseRepository).findAll();
     }
 
