@@ -1,6 +1,7 @@
 package com.trainease.controller;
 
 import com.trainease.entity.User;
+import com.trainease.entity.UserRole;
 import com.trainease.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,8 +39,8 @@ class UserControllerTest {
 
     @Test
     void getAllUsersNoParam() throws Exception {
-        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
-        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role(UserRole.ADMIN).build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role(UserRole.TRAINEE).batchId("B1").build();
         List<User> userList = Arrays.asList(user1, user2);
         when(userService.getAllUsers(null, null)).thenReturn(userList);
         MvcResult responseResult = mockMvc.perform(MockMvcRequestBuilders.get("/users"))
