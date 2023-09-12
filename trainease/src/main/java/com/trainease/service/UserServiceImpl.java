@@ -1,8 +1,6 @@
 package com.trainease.service;
 
-import com.trainease.entity.CourseProgress;
-import com.trainease.entity.Course;
-import com.trainease.entity.User;
+import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
 import com.trainease.repository.UserRepository;
@@ -29,28 +27,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers(String role, String batchId) {
-        if (role != null && role.equals("TRAINEE") && batchId != null) {
+    public List<User> getAllUsers(UserRole role, String batchId) {
+        if (role != null && role.equals(UserRole.TRAINEE) && batchId != null) {
             return userRepository.findAll()
                     .stream()
-                    .filter(
-                            user -> user.getRole().equals(role) &&
-                                    user.getBatchId().equals(batchId))
+                    .filter(user -> user.getRole().equals(role) && user.getBatchId().equals(batchId))
                     .collect(Collectors.toList());
         }
         if (role != null) {
             return userRepository.findAll()
                     .stream()
-                    .filter(
-                            user -> user.getRole().equals(role))
+                    .filter(user -> user.getRole().equals(role))
                     .collect(Collectors.toList());
         }
 
         if (batchId != null) {
             return userRepository.findAll()
                     .stream()
-                    .filter(
-                            user -> user.getBatchId() != null && user.getBatchId().equals(batchId))
+                    .filter(user -> user.getBatchId() != null && user.getBatchId().equals(batchId))
                     .collect(Collectors.toList());
         }
 
@@ -64,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(User user) {
-        if (user.getRole().equals("TRAINEE")) {
+        if (user.getRole().equals(UserRole.TRAINEE)) {
             List<Course> allCoursesForGivenBatchId = courseRepository.findAll()
                     .stream()
                     .filter(course -> course.getBatchId().equals(user.getBatchId()))
@@ -80,7 +74,8 @@ public class UserServiceImpl implements UserService {
                         .estimatedStartDate(currentCourse.getEstimatedStartDate())
                         .estimatedEndDate(currentCourse.getEstimatedEndDate())
                         .subjectMatterExpert(currentCourse.getSubjectMatterExpert())
-                        .status("TO BE STARTED")
+                        .status(CourseStatus.TO_BE_STARTED)
+                        .feedback("NA")
                         .build();
                 courseProgressRepository.save(courseProgress);
             }

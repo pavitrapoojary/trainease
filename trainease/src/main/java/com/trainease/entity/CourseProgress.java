@@ -1,9 +1,6 @@
 package com.trainease.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +28,9 @@ public class CourseProgress {
     private Date estimatedStartDate;
     private Date estimatedEndDate;
     private List<String> subjectMatterExpert;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status;
     private String feedback;
     private Date actualStartDate;
     private Date actualEndDate;

@@ -1,11 +1,12 @@
 package com.trainease.service;
 
 import com.trainease.entity.User;
+import com.trainease.entity.UserRole;
 
 import java.util.List;
 
 public interface UserService {
-    List<User> getAllUsers(String role, String batchId);
+    List<User> getAllUsers(UserRole role, String batchId);
 
     User getUserByEmailId(String emailId);
 

@@ -1,6 +1,7 @@
 package com.trainease.controller;
 
 import com.trainease.entity.User;
+import com.trainease.entity.UserRole;
 import com.trainease.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class UserController {
 
     @GetMapping("/users")
     public List<User> getAllUsers(
-            @RequestParam(name = "role", required = false) String role,
+            @RequestParam(name = "role", required = false) UserRole role,
             @RequestParam(name = "batchId", required = false) String batchId
     ) {
         return this.userService.getAllUsers(role, batchId);

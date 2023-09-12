@@ -1,6 +1,7 @@
 package com.trainease.service;
 
 import com.trainease.entity.User;
+import com.trainease.entity.UserRole;
 import com.trainease.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,9 +22,9 @@ class UserServiceTest {
 
     @Test
     void getAllUsersNoParam() {
-        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
-        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
-        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role(UserRole.ADMIN).build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role(UserRole.TRAINEE).batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role(UserRole.TRAINEE).batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers(null, null);
@@ -32,21 +33,21 @@ class UserServiceTest {
 
     @Test
     void getAllUsersByRole() {
-        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
-        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
-        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role(UserRole.ADMIN).build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role(UserRole.TRAINEE).batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role(UserRole.TRAINEE).batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
-        List<User> actualUserList = userService.getAllUsers("ADMIN", null);
+        List<User> actualUserList = userService.getAllUsers(UserRole.ADMIN, null);
         assertEquals(1, actualUserList.size());
         assertTrue(actualUserList.contains(user1));
     }
 
     @Test
     void getAllUsersByBatchId() {
-        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
-        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
-        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role(UserRole.ADMIN).build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role(UserRole.TRAINEE).batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role(UserRole.TRAINEE).batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
         List<User> actualUserList = userService.getAllUsers(null, "B1");
@@ -56,19 +57,19 @@ class UserServiceTest {
 
     @Test
     void getAllUsersByRoleAndBatchId() {
-        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role("ADMIN").build();
-        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role("TRAINEE").batchId("B1").build();
-        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role("TRAINEE").batchId("B2").build();
+        User user1 = User.builder().emailId("test1@gmail.com").name("test1").role(UserRole.ADMIN).build();
+        User user2 = User.builder().emailId("test2@gmail.com").name("test2").role(UserRole.TRAINEE).batchId("B1").build();
+        User user3 = User.builder().emailId("test3@gmail.com").name("test3").role(UserRole.TRAINEE).batchId("B2").build();
         List<User> expectedUserList = Arrays.asList(user1, user2, user3);
         when(userRepository.findAll()).thenReturn(expectedUserList);
-        List<User> actualUserList = userService.getAllUsers("TRAINEE", "B2");
+        List<User> actualUserList = userService.getAllUsers(UserRole.TRAINEE, "B2");
         assertEquals(1, actualUserList.size());
         assertTrue(actualUserList.contains(user3));
     }
 
     @Test
     void getUserByEmailIdUserExists() {
-        User expectedUser = User.builder().emailId("test@gmail.com").name("test").role("ADMIN").build();
+        User expectedUser = User.builder().emailId("test@gmail.com").name("test").role(UserRole.ADMIN).build();
         when(userRepository.findById("test@gmail.com")).thenReturn(Optional.of(expectedUser));
         User actualUser = userService.getUserByEmailId("test@gmail.com");
         assertNotNull(actualUser);
@@ -86,7 +87,7 @@ class UserServiceTest {
 
     @Test
     void createUser() {
-        User newUser = User.builder().emailId("p@gmail.com").name("test").role("ADMIN").build();
+        User newUser = User.builder().emailId("p@gmail.com").name("test").role(UserRole.ADMIN).build();
         when(userRepository.save(newUser)).thenReturn(newUser);
         User createdUser = userService.createUser(newUser);
         assertNotNull(createdUser);
@@ -98,8 +99,8 @@ class UserServiceTest {
     @Test
     void updateUserWhenUserExists() {
         String emailId = "test@gmail.com";
-        User existingUser = User.builder().emailId(emailId).name("test").role("ADMIN").build();
-        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role("ADMIN").build();
+        User existingUser = User.builder().emailId(emailId).name("test").role(UserRole.ADMIN).build();
+        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role(UserRole.ADMIN).build();
         when(userRepository.findById(emailId)).thenReturn(Optional.of(existingUser));
         when(userRepository.save(any(User.class))).thenReturn(updatedUser);
         String actualResult = userService.updateUser(updatedUser);
@@ -111,7 +112,7 @@ class UserServiceTest {
     @Test
     void updateUserWhenUserDoesNotExist() {
         String emailId = "test@gmail.com";
-        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role("ADMIN").build();
+        User updatedUser = User.builder().emailId(emailId).name("testUpdated").role(UserRole.ADMIN).build();
         when(userRepository.findById(emailId)).thenReturn(Optional.empty());
         String actualResult = userService.updateUser(updatedUser);
         assertEquals("User " + emailId + " does not exist.", actualResult);
@@ -121,7 +122,7 @@ class UserServiceTest {
     @Test
     void deleteUserByEmailIdWhenUserExists() {
         String emailId = "test@gmail.com";
-        User user = User.builder().emailId(emailId).name("test").role("ADMIN").build();
+        User user = User.builder().emailId(emailId).name("test").role(UserRole.ADMIN).build();
         when(userRepository.findById(emailId)).thenReturn(Optional.of(user));
         String actualResult = userService.deleteUserByEmailId(emailId);
         assertEquals("User " + emailId + " deleted successfully!", actualResult);
