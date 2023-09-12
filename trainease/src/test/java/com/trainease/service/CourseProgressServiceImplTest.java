@@ -4,8 +4,10 @@ import com.trainease.entity.CourseProgress;
 import com.trainease.entity.CourseStatus;
 import com.trainease.repository.CourseProgressRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +16,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class CourseProgressServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CourseProgressServiceImplTest {
     @Mock
-    private CourseProgressRepository courseProgressRepository = mock(CourseProgressRepository.class);
+    private CourseProgressRepository courseProgressRepository;
 
     @InjectMocks
-    private CourseProgressServiceImpl courseProgressService = new CourseProgressServiceImpl(courseProgressRepository);
+    private CourseProgressServiceImpl courseProgressService;
 
     @Test
     void getCoursesProgressByEmailIdWhenEmailIdExists() {
@@ -87,7 +90,7 @@ class CourseProgressServiceTest {
         when(courseProgressRepository.findById(progressId)).thenReturn(Optional.empty());
         String actualResult = courseProgressService.updateCourseProgress(emailId, progressId, updatedCourseProgress);
         assertEquals("Given progressId:1 does not exist.", actualResult);
-        verify(courseProgressRepository,never()).save(any(CourseProgress.class));
+        verify(courseProgressRepository, never()).save(any(CourseProgress.class));
     }
 }
 

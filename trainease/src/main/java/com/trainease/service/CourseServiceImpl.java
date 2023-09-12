@@ -3,6 +3,8 @@ package com.trainease.service;
 import com.trainease.entity.BatchWiseCourses;
 import com.trainease.entity.Course;
 import com.trainease.repository.CourseRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,12 +13,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class CourseServiceImpl implements CourseService {
-    private final CourseRepository courseRepository;
+    private CourseRepository courseRepository;
 
-    public CourseServiceImpl(CourseRepository courseRepository) {
-        this.courseRepository = courseRepository;
-    }
+//    public CourseServiceImpl(CourseRepository courseRepository) {
+//        this.courseRepository = courseRepository;
+//    }
 
     @Override
     public List<Course> getCoursesByBatchId(String batchId) {

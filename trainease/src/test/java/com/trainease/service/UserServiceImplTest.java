@@ -8,8 +8,10 @@ import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
 import com.trainease.repository.UserRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,23 +20,20 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class UserServiceTest {
+@ExtendWith(MockitoExtension.class)
+class UserServiceImplTest {
 
     @Mock
-    private UserRepository userRepository = mock(UserRepository.class);
+    private UserRepository userRepository;
+
+    @Mock
+    private CourseRepository courseRepository;
+
+    @Mock
+    private CourseProgressRepository courseProgressRepository;
 
     @InjectMocks
-    private UserServiceImpl userService = new UserServiceImpl(userRepository);
-
-    @Mock
-    private CourseRepository courseRepository = mock(CourseRepository.class);
-
-    private CourseServiceImpl courseService = new CourseServiceImpl(courseRepository);
-
-    @Mock
-    private CourseProgressRepository courseProgressRepository = mock(CourseProgressRepository.class);
-
-    private CourseProgressServiceImpl courseProgressService = new CourseProgressServiceImpl(courseProgressRepository);
+    private UserServiceImpl userService;
 
 
     @Test
@@ -113,38 +112,30 @@ class UserServiceTest {
         assertEquals(newAdminUser.getRole(), createdAdminUser.getRole());
     }
 
-//    @Test
-//    void createTraineeUser() {
-//        User newTraineeUser = User.builder().emailId("trainee@gmail.com")
-//                .name("demo trainee").role(UserRole.TRAINEE).batchId("B1").build();
-//
-//        Course course = Course.builder().courseId("C1").batchId("B1").courseName("cName").build();
-//        Course course1 = Course.builder().courseId("C2").batchId("B1").courseName("cName").build();
-//        Course course2 = Course.builder().courseId("C3").batchId("B2").courseName("cName").build();
-//        List<Course> courseList = Arrays.asList(course, course1, course2);
-//
-////        when(courseRepository.save(course)).thenReturn(course);
-////        when(courseRepository.save(course1)).thenReturn(course1);
-////        when(courseRepository.save(course2)).thenReturn(course2);
-////
-////        courseService.createCourse(course);
-////        courseService.createCourse(course1);
-////        courseService.createCourse(course2);
-//
-//        when(courseRepository.findAll()).thenReturn(courseList);
-//        when(userRepository.save(newTraineeUser)).thenReturn(newTraineeUser);
-//
-//        User createdTraineeUser = userService.createUser(newTraineeUser);
-//
-//        assertNotNull(createdTraineeUser);
-//        assertEquals(newTraineeUser.getEmailId(), createdTraineeUser.getEmailId());
-//        assertEquals(newTraineeUser.getName(), createdTraineeUser.getName());
-//        assertEquals(newTraineeUser.getRole(), createdTraineeUser.getRole());
-//
-//        verify(userRepository).save(newTraineeUser);
-//        verify(courseRepository).findAll();
-//        verify(courseProgressRepository).save(any(CourseProgress.class));
-//    }
+    @Test
+    void createTraineeUser() {
+        User newTraineeUser = User.builder().emailId("trainee@gmail.com")
+                .name("demo trainee").role(UserRole.TRAINEE).batchId("B1").build();
+
+        Course course = Course.builder().courseId("C1").batchId("B1").courseName("cName").build();
+        Course course1 = Course.builder().courseId("C2").batchId("B1").courseName("cName").build();
+        Course course2 = Course.builder().courseId("C3").batchId("B2").courseName("cName").build();
+        List<Course> courseList = Arrays.asList(course, course1, course2);
+
+        when(courseRepository.findAll()).thenReturn(courseList);
+        when(userRepository.save(newTraineeUser)).thenReturn(newTraineeUser);
+
+        User createdTraineeUser = userService.createUser(newTraineeUser);
+
+        assertNotNull(createdTraineeUser);
+        assertEquals(newTraineeUser.getEmailId(), createdTraineeUser.getEmailId());
+        assertEquals(newTraineeUser.getName(), createdTraineeUser.getName());
+        assertEquals(newTraineeUser.getRole(), createdTraineeUser.getRole());
+
+        verify(userRepository).save(newTraineeUser);
+        verify(courseRepository).findAll();
+        verify(courseProgressRepository, times(2)).save(any(CourseProgress.class));
+    }
 
     @Test
     void updateUserWhenUserExists() {

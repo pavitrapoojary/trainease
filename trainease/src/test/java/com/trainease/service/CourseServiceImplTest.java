@@ -4,8 +4,10 @@ import com.trainease.entity.BatchWiseCourses;
 import com.trainease.entity.Course;
 import com.trainease.repository.CourseRepository;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,12 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-class CourseServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CourseServiceImplTest {
     @Mock
-    private CourseRepository courseRepository = mock(CourseRepository.class);
+    private CourseRepository courseRepository;
 
     @InjectMocks
-    private CourseServiceImpl courseService = new CourseServiceImpl(courseRepository);
+    private CourseServiceImpl courseService;
 
     @Test
     void getCoursesByBatchId() {
@@ -69,7 +72,6 @@ class CourseServiceTest {
     @Test
     void deleteCourseByCourseIdWhenCourseDoesNotExist() {
         String courseId = "C1";
-        Course course = Course.builder().courseId(courseId).batchId("B1").courseName("cName").build();
         when(courseRepository.findById(courseId)).thenReturn(Optional.empty());
         String actualResult = courseService.deleteCourseByCourseId(courseId);
         assertEquals("Course ID : " + courseId + " does not exist.", actualResult);

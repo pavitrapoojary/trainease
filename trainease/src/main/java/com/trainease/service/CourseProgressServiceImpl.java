@@ -2,6 +2,8 @@ package com.trainease.service;
 
 import com.trainease.entity.CourseProgress;
 import com.trainease.repository.CourseProgressRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,12 +11,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class CourseProgressServiceImpl implements CourseProgressService {
-    private final CourseProgressRepository courseProgressRepository;
+    private CourseProgressRepository courseProgressRepository;
 
-    public CourseProgressServiceImpl(CourseProgressRepository courseProgressRepository) {
-        this.courseProgressRepository = courseProgressRepository;
-    }
+//    public CourseProgressServiceImpl(CourseProgressRepository courseProgressRepository) {
+//        this.courseProgressRepository = courseProgressRepository;
+//    }
 
     @Override
     public List<CourseProgress> getCoursesProgressByTraineeEmailId(String emailId) {

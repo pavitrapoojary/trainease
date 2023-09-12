@@ -4,7 +4,8 @@ import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
 import com.trainease.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,19 +13,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private UserRepository userRepository;
 
-    @Autowired
-    CourseProgressRepository courseProgressRepository;
+    private CourseProgressRepository courseProgressRepository;
 
-    @Autowired
-    CourseRepository courseRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private CourseRepository courseRepository;
 
     @Override
     public List<User> getAllUsers(UserRole role, String batchId) {
