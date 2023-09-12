@@ -22,22 +22,22 @@ public class UserController {
         return this.userService.getAllUsers(role, batchId);
     }
 
-    @GetMapping("/user/{emailId}")
+    @GetMapping("/users/{emailId}")
     public User getUserByEmailId(@PathVariable String emailId) {
         return this.userService.getUserByEmailId(emailId);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/users")
     public User createUser(@RequestBody User user) {
         return this.userService.createUser(user);
     }
 
-    @PutMapping("/user")
+    @PutMapping("/users")
     public String updateUser(@RequestBody User user) {
         return this.userService.updateUser(user);
     }
 
-    @DeleteMapping("/user/{emailId}")
+    @DeleteMapping("/users/{emailId}")
     public String deleteUserByEmailId(@PathVariable String emailId) {
         return this.userService.deleteUserByEmailId(emailId);
     }

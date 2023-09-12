@@ -23,12 +23,12 @@ public class CourseController {
         return this.courseService.getAllBatchWiseCourses();
     }
 
-    @PostMapping("/course")
+    @PostMapping("/courses")
     public Course createCourse(@RequestBody Course course) {
         return this.courseService.createCourse(course);
     }
 
-    @DeleteMapping("/course/{courseId}")
+    @DeleteMapping("/courses/{courseId}")
     public String deleteCourseByCourseId(@PathVariable String courseId) {
         return this.courseService.deleteCourseByCourseId(courseId);
     }

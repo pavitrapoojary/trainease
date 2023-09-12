@@ -5,7 +5,6 @@ import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
 import com.trainease.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-@NoArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
