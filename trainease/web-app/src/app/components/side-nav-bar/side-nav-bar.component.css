@@ -1,0 +1,36 @@
+#trainease-heading{
+    font-size: 30px;
+    font-weight: bolder;
+    color: rgb(255, 255, 255);
+    padding-left: 30px;
+    padding-bottom: 15px;
+}
+#sidebar {
+    background-color: rgb(24, 24, 222);
+    height: 100%;
+    width: 300px; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 20px;
+}
+
+#sidebar a {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #333; 
+    display: block;
+}
+
+#sidebar a:hover {
+    background-color: rgb(24, 24, 222); 
+    color: white;
+    font-weight: bolder
+}
+
+
+.content {
+    margin-left: 320px; 
+    padding: 20px;
+}

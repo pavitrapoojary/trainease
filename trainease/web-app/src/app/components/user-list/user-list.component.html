@@ -1,0 +1,53 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">User List</h1>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="roleFilter">Filter by Role:</label>
+                        <select class="form-select" id="roleFilter">
+                            <option value="">All Roles</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="TRAINEE">TRAINEE</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="batchIdFilter">Filter by Batch ID:</label>
+                        <input type="text" class="form-control" id="batchIdFilter" />
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary" (click)="applyFilters()" style="margin-top: 20px;margin-left: 20px;">Apply Filters</button>
+                    </div>
+                </div>
+
+                <!-- User List Table -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Batch ID</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of filteredUsers">
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.emailId }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ user.batchId }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+<app-footer></app-footer>
