@@ -1,0 +1,64 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">Track Trainee Progress</h1>
+
+                <div class="row mb-2">
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="roleFilter">Email ID : </label>
+                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId" name="emailId"required>
+                            </div>
+                            <div class="col-md-4" style="margin-top: 20px;">
+                                <button type="button" class="btn btn-default btn-circle-search search-button"
+                                    (click)="getCoursesProgressByTraineeEmailId()">
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="table-container">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th>Course ID</th>
+                                <th>Course Name</th>
+                                <th>Duration</th>
+                                <th>Est. Start Date</th>
+                                <th>Est. End Date</th>
+                                <th>Status</th>
+                                <th>Feedback</th>
+                                <th>Actual Start Date</th>
+                                <th>Actual End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let progress of progresses" style="text-align: center;">
+                                <td>{{ progress.courseId }}</td>
+                                <td>{{ progress.courseName }}</td>
+                                <td>{{ progress.durationInHours }} hours</td>
+                                <td>{{ progress.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
+                                <td>{{ progress.estimatedEndDate | date:'dd-MM-yyyy' }}</td>
+                                <td>{{ progress.status }}</td>
+                                <td>{{ progress.feedback }}</td>
+                                <td>{{ progress.actualStartDate | date:'dd-MM-yyyy' }}</td>
+                                <td>{{ progress.actualEndDate | date:'dd-MM-yyyy' }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -13,7 +13,6 @@
                         <div class="col-md-4">
                             <label for="batchFilter">Training Batch ID:</label>
                             <select class="form-select" id="batchFilter" [(ngModel)]="selectedBatch">
-                                <!-- <option value="">All Batches</option> -->
                                 <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}</option>
                             </select>
                         </div>
@@ -34,9 +33,9 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Link</th>
-                                <th>Duration (Hours)</th>
-                                <th>Estimated Start Date</th>
-                                <th>Estimated End Date</th>
+                                <th>Duration</th>
+                                <th>Est. Start Date</th>
+                                <th>Est. End Date</th>
                                 <th>SMEs</th>
                             </tr>
                         </thead>
@@ -45,11 +44,17 @@
                                 <td>{{ course.courseId }}</td>
                                 <td>{{ course.courseName }}</td>
                                 <td>{{ course.description }}</td>
-                                <td>{{ course.link }}</td>
-                                <td>{{ course.durationInHours }}</td>
-                                <td>{{ course.estimatedStartDate }}</td>
-                                <td>{{ course.estimatedEndDate }}</td>
-                                <td>{{ course.subjectMatterExpert }}</td>
+                                <td>
+                                    <a [href]="course.link">Link</a>
+                                </td>                                
+                                <td>{{ course.durationInHours }} hours</td>
+                                <td>{{ course.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
+                                <td>{{ course.estimatedEndDate | date:'dd-MM-yyyy'}}</td>
+                                <td>
+                                    <ul>
+                                        <li *ngFor="let expert of course.subjectMatterExpert">{{ expert.name }}</li>
+                                    </ul>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

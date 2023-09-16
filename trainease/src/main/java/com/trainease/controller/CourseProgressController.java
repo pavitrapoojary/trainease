@@ -13,16 +13,14 @@ public class CourseProgressController {
     @Autowired
     CourseProgressService courseProgressService;
 
-    @GetMapping("/{emailId}/courses/progress")
+    @GetMapping("/{emailId}/progress")
     public List<CourseProgress> getCoursesProgressByTraineeEmailId(@PathVariable String emailId) {
         return this.courseProgressService.getCoursesProgressByTraineeEmailId(emailId);
     }
 
-    @PutMapping("/{emailId}/courses/progress")
-    public String updateCourseProgress(@PathVariable String emailId,
-                                       @RequestParam Integer progressId,
-                                       @RequestBody CourseProgress courseProgress) {
-        return this.courseProgressService.updateCourseProgress(emailId, progressId, courseProgress);
+    @PutMapping("/progress")
+    public String updateCourseProgress(@RequestBody CourseProgress courseProgress) {
+        return this.courseProgressService.updateCourseProgress(courseProgress);
     }
 
 }

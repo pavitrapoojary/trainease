@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BatchListComponent } from './components/batch-list/batch-list.component';
 import { CourseListComponent } from './components/course-list/course-list.component';
+import { TrackProgressComponent } from './components/track-progress/track-progress.component';
+import { UpdateProgressComponent } from './components/update-progress/update-progress.component';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { CourseListComponent } from './components/course-list/course-list.compon
     AddUserComponent,
     CreateBatchComponent,
     BatchListComponent,
-    CourseListComponent
+    CourseListComponent,
+    TrackProgressComponent,
+    UpdateProgressComponent
   ],
   imports: [
     BrowserModule,

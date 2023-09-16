@@ -24,18 +24,18 @@ public class CourseProgressServiceImpl implements CourseProgressService {
     }
 
     @Override
-    public String updateCourseProgress(String emailId, Integer progressId, CourseProgress courseProgress) {
-        Optional<CourseProgress> existingBatchCourseProgressOptional = courseProgressRepository.findById(progressId);
-        if (existingBatchCourseProgressOptional.isPresent()) {
-            CourseProgress existingCourseProgress = existingBatchCourseProgressOptional.get();
-            existingCourseProgress.setStatus(courseProgress.getStatus());
-            existingCourseProgress.setFeedback(courseProgress.getFeedback());
-            existingCourseProgress.setActualStartDate(courseProgress.getActualStartDate());
-            existingCourseProgress.setActualEndDate(courseProgress.getActualEndDate());
-            courseProgressRepository.save(existingCourseProgress);
-            return "Course progress for batchId:" + courseProgress.getBatchId() + " & courseId:" + courseProgress.getCourseId() + " has been updated successfully!";
-        } else {
-            return "Given progressId:" + progressId + " does not exist.";
+    public String updateCourseProgress(CourseProgress updatedCourseProgress) {
+        Optional<CourseProgress> courseProgressExistsOptional = courseProgressRepository.findByEmailIdAndCourseId(updatedCourseProgress.getEmailId(), updatedCourseProgress.getCourseId());
+        if (courseProgressExistsOptional.isPresent()) {
+            CourseProgress courseProgressExists = courseProgressExistsOptional.get();
+            courseProgressExists.setStatus(updatedCourseProgress.getStatus());
+            courseProgressExists.setFeedback(updatedCourseProgress.getFeedback());
+            courseProgressExists.setActualStartDate(updatedCourseProgress.getActualStartDate());
+            courseProgressExists.setActualEndDate(updatedCourseProgress.getActualEndDate());
+            courseProgressRepository.save(courseProgressExists);
+            return "Progress for Course ID : " + courseProgressExists.getCourseId() + " has been updated!";
         }
+        return "Course ID : " + updatedCourseProgress.getCourseId() + " does not exist for Trainee Email ID : " + updatedCourseProgress.getEmailId();
     }
+
 }

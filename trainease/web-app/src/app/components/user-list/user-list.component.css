@@ -1,6 +1,5 @@
-
 .table-container {
-    max-height: 500px; /* Adjust the height as needed */
+    max-height: 500px; 
     overflow: auto;
     position: relative;
     margin-top: 30px;
@@ -16,7 +15,7 @@
     text-align: center;
     background-color: rgb(24, 24, 222);
     color: white;
-    font-size: 20px;
+    font-size: 15px;
     padding: 10px;
     border: 1px solid rgb(255, 255, 255);
 }
@@ -75,9 +74,4 @@
     padding: 10px 20px; /* Adjust padding as needed */
     cursor: pointer; /* Show a pointer cursor on hover */
     border-radius: 5px; /* Add rounded corners */
-}
-
-/* Style the arrow icon inside the button */
-.arrow-icon {
-    margin-left: 5px; /* Add some spacing between the text and icon */
 }

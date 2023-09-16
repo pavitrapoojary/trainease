@@ -29,7 +29,7 @@ export class UserListComponent implements OnInit {
     this.getAllUsers();
   }
 
-  getAllUsers(){
+  getAllUsers() {
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
     });
@@ -45,16 +45,16 @@ export class UserListComponent implements OnInit {
     this.userService.getRoleSpecificUsers(this.selectedUserRole).subscribe((data) => {
       this.users = data;
     });
-    this.selectedBatch='';
-    this.selectedEmailId='';
+    this.selectedBatch = '';
+    this.selectedEmailId = '';
   }
 
   getBatchSpecificTrainees() {
     this.userService.getBatchSpecificTrainees(this.selectedBatch).subscribe((data) => {
       this.users = data;
     });
-    this.selectedUserRole='';
-    this.selectedEmailId='';
+    this.selectedUserRole = '';
+    this.selectedEmailId = '';
   }
 
   getUserByEmailId() {
@@ -62,12 +62,11 @@ export class UserListComponent implements OnInit {
       this.users = [];
       this.users.push(data);
     });
-    this.selectedUserRole='';
-    this.selectedBatch='';
+    this.selectedUserRole = '';
+    this.selectedBatch = '';
   }
 
   applyFilters(): void {
-    // Apply filters based on selectedRole and selectedBatchId
     this.filteredUsers = this.users.filter((user) => {
       const roleMatch =
         !this.selectedRole || user.role === this.selectedRole;
@@ -78,12 +77,12 @@ export class UserListComponent implements OnInit {
     });
   }
 
-  deleteUser(emailId:string) {
-    this.userService.deleteUserByEmailId(emailId).subscribe((data)=>{
+  deleteUser(emailId: string) {
+    this.userService.deleteUserByEmailId(emailId).subscribe((data) => {
       console.log(data);
       this.getAllUsers();
     });
-    
+
   }
 
   editUser() { }

@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface CourseProgressService {
     List<CourseProgress> getCoursesProgressByTraineeEmailId(String emailId);
-
-    String updateCourseProgress(String emailId, Integer progressId, CourseProgress courseProgress);
+//    String updateCourseProgress(String emailId, Integer progressId, CourseProgress courseProgress);
+    String updateCourseProgress(CourseProgress courseProgress);
 }

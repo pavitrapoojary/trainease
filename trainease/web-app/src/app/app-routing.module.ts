@@ -6,6 +6,7 @@ import { AddUserComponent } from './components/add-user/add-user.component';
 import { CreateBatchComponent } from './components/create-batch/create-batch.component';
 import { BatchListComponent } from './components/batch-list/batch-list.component';
 import { CourseListComponent } from './components/course-list/course-list.component';
+import { TrackProgressComponent } from './components/track-progress/track-progress.component';
 
 const routes: Routes = [
   {path:"",component:HomeComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path:"add-user",component:AddUserComponent},
   {path:"create-batch",component:CreateBatchComponent},
   {path:"batch-list",component:BatchListComponent},
-  {path:"course-list",component:CourseListComponent}
+  {path:"course-list",component:CourseListComponent},
+  {path:"track-progress",component:TrackProgressComponent}
 ];
 
 @NgModule({

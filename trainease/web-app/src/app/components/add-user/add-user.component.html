@@ -22,10 +22,8 @@
 
                     <div class="mb-3">
                         <label for="role" class="form-label">Role</label>
-                        <select class="form-select" id="role" [(ngModel)]="user.role" name="role" required>
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="TRAINEE">TRAINEE</option>
-                            <option value="SME">SME</option>
+                        <select class="form-select" id="roleFilter" [(ngModel)]="user.role" name="role" required>
+                            <option *ngFor="let userRole of userRoles" [value]="userRole">{{ userRole }}</option>
                         </select>
                     </div>
 
@@ -34,8 +32,7 @@
                         <input type="text" class="form-control" id="batchId" [(ngModel)]="user.batchId" name="batchId"
                             required>
                     </div>
-
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary create-user-btn">Add</button>
                 </form>
             </div>
         </div>
