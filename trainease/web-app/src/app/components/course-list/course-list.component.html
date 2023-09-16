@@ -1,0 +1,61 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">Courses List</h1>
+
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="batchFilter">Training Batch ID:</label>
+                            <select class="form-select" id="batchFilter" [(ngModel)]="selectedBatch">
+                                <!-- <option value="">All Batches</option> -->
+                                <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2" style="margin-top: 20px;">
+                            <button type="button" class="btn btn-default btn-circle-search search-button" (click)="getCoursesByBatchId(selectedBatch)">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                                <th>Duration (Hours)</th>
+                                <th>Estimated Start Date</th>
+                                <th>Estimated End Date</th>
+                                <th>SMEs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let course of courses" style="text-align: center;">
+                                <td>{{ course.courseId }}</td>
+                                <td>{{ course.courseName }}</td>
+                                <td>{{ course.description }}</td>
+                                <td>{{ course.link }}</td>
+                                <td>{{ course.durationInHours }}</td>
+                                <td>{{ course.estimatedStartDate }}</td>
+                                <td>{{ course.estimatedEndDate }}</td>
+                                <td>{{ course.subjectMatterExpert }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

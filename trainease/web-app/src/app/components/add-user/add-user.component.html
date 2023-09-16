@@ -1,0 +1,43 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">Add a User</h1>
+
+                <form (submit)="onSubmit()">
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" [(ngModel)]="user.emailId" name="email"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="user.name" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="role" class="form-label">Role</label>
+                        <select class="form-select" id="role" [(ngModel)]="user.role" name="role" required>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="TRAINEE">TRAINEE</option>
+                            <option value="SME">SME</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3" *ngIf="user.role === 'TRAINEE'">
+                        <label for="batchId" class="form-label">Batch ID</label>
+                        <input type="text" class="form-control" id="batchId" [(ngModel)]="user.batchId" name="batchId"
+                            required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

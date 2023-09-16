@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
                         .estimatedEndDate(currentCourse.getEstimatedEndDate())
                         .subjectMatterExpert(currentCourse.getSubjectMatterExpert())
                         .status(CourseStatus.TO_BE_STARTED)
-                        .feedback("NA")
                         .build();
                 courseProgressRepository.save(courseProgress);
             }

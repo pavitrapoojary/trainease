@@ -1,0 +1,83 @@
+
+.table-container {
+    max-height: 500px; /* Adjust the height as needed */
+    overflow: auto;
+    position: relative;
+    margin-top: 30px;
+}
+
+.table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table thead th {
+    text-align: center;
+    background-color: rgb(24, 24, 222);
+    color: white;
+    font-size: 20px;
+    padding: 10px;
+    border: 1px solid rgb(255, 255, 255);
+}
+.search-button mat-icon {
+    font-size: 17px; 
+    color: white;
+}
+
+.delete-button mat-icon {
+    font-size: 17px; 
+    color: white;
+}
+
+.edit-button mat-icon {
+    font-size: 17px;
+    color: white;
+}
+
+.btn-circle-search{
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: rgb(24, 24, 222);
+}
+.btn-circle-delete {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: red;
+}
+
+.btn-circle-edit {
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: rgb(216, 192, 8);
+}
+
+.arrow-button {
+    background-color: #006400; /* Dark green background color */
+    color: white; /* White text color */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Adjust padding as needed */
+    cursor: pointer; /* Show a pointer cursor on hover */
+    border-radius: 5px; /* Add rounded corners */
+}
+
+/* Style the arrow icon inside the button */
+.arrow-icon {
+    margin-left: 5px; /* Add some spacing between the text and icon */
+}

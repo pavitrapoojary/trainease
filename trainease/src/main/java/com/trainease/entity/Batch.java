@@ -5,15 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
+@Document(collection = "batches")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BatchWiseCourses {
+public class Batch {
     @Id
     private String batchId;
-    private List<Course> courses;
+    private String batchName;
+    private String batchDescription;
 }

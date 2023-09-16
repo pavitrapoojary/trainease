@@ -1,19 +1,24 @@
 <div class="accordion" id="sidebar">
-    <h2 id="trainease-heading">IdeaS TrainEase</h2>
-    
+
+    <a href="#" routerLink="/">
+        <h2 id="trainease-heading">IdeaS TrainEase</h2>
+    </a>
+
+
     <!-- User Management -->
     <div class="accordion-item">
         <h2 class="accordion-header" id="userManagement">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#userCollapse" aria-expanded="false" aria-controls="userCollapse">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#userCollapse" aria-expanded="false" aria-controls="userCollapse">
                 User Management
             </button>
         </h2>
-        <div id="userCollapse" class="accordion-collapse collapse" aria-labelledby="userManagement" data-bs-parent="#sidebar">
+        <div id="userCollapse" class="accordion-collapse collapse" aria-labelledby="userManagement"
+            data-bs-parent="#sidebar">
             <div class="accordion-body">
                 <ul class="list-unstyled">
-                    <li><a href="#" routerLink="/user-list">Get All Users</a></li>
-                    <li><a href="#">Add User</a></li>
-                    <li><a href="#">Delete User</a></li>
+                    <li><a href="#" routerLink="/user-list">User List</a></li>
+                    <li><a href="#" routerLink="/add-user">Add a User</a></li>
                 </ul>
             </div>
         </div>
@@ -21,15 +26,37 @@
     <!-- Training Batch Management -->
     <div class="accordion-item">
         <h2 class="accordion-header" id="batchManagement">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#batchCollapse" aria-expanded="false" aria-controls="batchCollapse">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#batchCollapse" aria-expanded="false" aria-controls="batchCollapse">
                 Training Batch Management
             </button>
         </h2>
-        <div id="batchCollapse" class="accordion-collapse collapse" aria-labelledby="batchManagement" data-bs-parent="#sidebar">
+        <div id="batchCollapse" class="accordion-collapse collapse" aria-labelledby="batchManagement"
+            data-bs-parent="#sidebar">
             <div class="accordion-body">
                 <ul class="list-unstyled">
-                    <li><a href="#">Create a Batch</a></li>
-                    <li><a href="#">Get All Batches</a></li>
+                    <li><a href="#" routerLink="/create-batch">Create a Batch</a></li>
+                    <li><a href="#" routerLink="/batch-list">Get All Batch Details</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- Course Management -->
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="courseManagement">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#courseCollapse" aria-expanded="false" aria-controls="courseCollapse">
+                Course Management
+            </button>
+        </h2>
+        <div id="courseCollapse" class="accordion-collapse collapse" aria-labelledby="courseManagement"
+            data-bs-parent="#sidebar">
+            <div class="accordion-body">
+                <ul class="list-unstyled">
+                    <li><a href="#" routerLink="/course-list">View Courses</a></li>
+                    <li><a href="#">Create a Course</a></li>
+                    <li><a href="#">Update a Course</a></li>
+                    <li><a href="#">Delete a Course</a></li>
                 </ul>
             </div>
         </div>

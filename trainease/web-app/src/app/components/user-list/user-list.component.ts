@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { Batch } from 'src/app/models/batch.model';
+import { User, UserRole } from 'src/app/models/user.model';
+import { BatchService } from 'src/app/services/batch.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -7,19 +9,61 @@ import { UserService } from 'src/app/services/user.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit{
-  users: User[] =[];
+export class UserListComponent implements OnInit {
+  userRoles = Object.values(UserRole);
+  users: User[] = [];
   filteredUsers: User[] = [];
   selectedRole: string = '';
   selectedBatchId: string = '';
-  
-  constructor(private userService: UserService){}
+  emailId: string = '';
+  batches: Batch[] = [];
+  selectedBatch: string = '';
+  selectedEmailId: string = '';
+  selectedUserRole: string = '';
+
+  constructor(private userService: UserService, private batchService: BatchService) {
+    this.fetchBatchIds();
+  }
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe((data)=>{
+    this.getAllUsers();
+  }
+
+  getAllUsers(){
+    this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
-      this.applyFilters();
     });
+  }
+
+  fetchBatchIds() {
+    this.batchService.getAllBatches().subscribe((data) => {
+      this.batches = data;
+    });
+  }
+
+  getRoleSpecificUsers() {
+    this.userService.getRoleSpecificUsers(this.selectedUserRole).subscribe((data) => {
+      this.users = data;
+    });
+    this.selectedBatch='';
+    this.selectedEmailId='';
+  }
+
+  getBatchSpecificTrainees() {
+    this.userService.getBatchSpecificTrainees(this.selectedBatch).subscribe((data) => {
+      this.users = data;
+    });
+    this.selectedUserRole='';
+    this.selectedEmailId='';
+  }
+
+  getUserByEmailId() {
+    this.userService.getUserByEmailId(this.selectedEmailId).subscribe((data) => {
+      this.users = [];
+      this.users.push(data);
+    });
+    this.selectedUserRole='';
+    this.selectedBatch='';
   }
 
   applyFilters(): void {
@@ -33,5 +77,15 @@ export class UserListComponent implements OnInit{
       return roleMatch && batchIdMatch;
     });
   }
+
+  deleteUser(emailId:string) {
+    this.userService.deleteUserByEmailId(emailId).subscribe((data)=>{
+      console.log(data);
+      this.getAllUsers();
+    });
+    
+  }
+
+  editUser() { }
 
 }

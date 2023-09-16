@@ -1,0 +1,25 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">Batch List</h1>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3" *ngFor="let batch of batches">
+                        <div class="card batch-card" style="width: 15rem;">
+                            <div class="card-body">
+                                <h2 class="card-title">{{ batch.batchId }}</h2>
+                                <h5 class="card-subtitle mb-2 text-body-secondary">{{ batch.batchName }}</h5>
+                                <p>{{ batch.batchDescription }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
