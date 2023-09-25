@@ -17,6 +17,9 @@ import { BatchListComponent } from './components/batch-list/batch-list.component
 import { CourseListComponent } from './components/course-list/course-list.component';
 import { TrackProgressComponent } from './components/track-progress/track-progress.component';
 import { UpdateProgressComponent } from './components/update-progress/update-progress.component';
+import { CreateCourseComponent } from './components/create-course/create-course.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { TestCompComponent } from './components/test-comp/test-comp.component';
 
 
 @NgModule({
@@ -31,7 +34,9 @@ import { UpdateProgressComponent } from './components/update-progress/update-pro
     BatchListComponent,
     CourseListComponent,
     TrackProgressComponent,
-    UpdateProgressComponent
+    UpdateProgressComponent,
+    CreateCourseComponent,
+    TestCompComponent
   ],
   imports: [
     BrowserModule,
@@ -39,9 +44,10 @@ import { UpdateProgressComponent } from './components/update-progress/update-pro
     HttpClientModule,
     FormsModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    AgGridModule,
   ],
-  providers: [],
+  providers: [  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

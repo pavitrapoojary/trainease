@@ -1,9 +1,9 @@
 package com.trainease.repository;
 
 import com.trainease.entity.Batch;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BatchRepository extends MongoRepository<Batch,String> {
+public interface BatchRepository extends JpaRepository<Batch,String> {
 }

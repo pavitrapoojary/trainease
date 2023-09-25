@@ -37,23 +37,100 @@
                                 <th>Est. Start Date</th>
                                 <th>Est. End Date</th>
                                 <th>SMEs</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let course of courses" style="text-align: center;">
-                                <td>{{ course.courseId }}</td>
-                                <td>{{ course.courseName }}</td>
-                                <td>{{ course.description }}</td>
+
                                 <td>
-                                    <a [href]="course.link">Link</a>
-                                </td>                                
-                                <td>{{ course.durationInHours }} hours</td>
-                                <td>{{ course.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
-                                <td>{{ course.estimatedEndDate | date:'dd-MM-yyyy'}}</td>
+                                    <ng-container *ngIf="!course.editing; else editCourseId">
+                                        {{ course.courseId }}
+                                    </ng-container>
+                                    <ng-template #editCourseId>
+                                        {{ course.courseId }}
+                                    </ng-template>
+                                </td>
+
                                 <td>
-                                    <ul>
-                                        <li *ngFor="let expert of course.subjectMatterExpert">{{ expert.name }}</li>
-                                    </ul>
+                                    <ng-container *ngIf="!course.editing; else editCourseName">
+                                        {{ course.courseName }}
+                                    </ng-container>
+                                    <ng-template #editCourseName>
+                                        <input [(ngModel)]="course.courseName" class="form-control"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseDescription">
+                                        {{ course.description }}
+                                    </ng-container>
+                                    <ng-template #editCourseDescription>
+                                        <input [(ngModel)]="course.description" class="form-control"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseLink">
+                                        <a [href]="course.link">Link</a>
+                                    </ng-container>
+                                    <ng-template #editCourseLink>
+                                        <input [(ngModel)]="course.link" class="form-control"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseDurationInHours">
+                                        {{ course.durationInHours }} hours
+                                    </ng-container>
+                                    <ng-template #editCourseDurationInHours>
+                                        <input [(ngModel)]="course.durationInHours" class="form-control" style="width: 50px;"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseEstimatedStartDate">
+                                        {{ course.estimatedStartDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseEstimatedStartDate>
+                                        <input type="date" [(ngModel)]="course.estimatedStartDate" class="form-control" style="width: 100px;"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseEstimatedEndDate">
+                                        {{ course.estimatedEndDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseEstimatedEndDate>
+                                        <input type="date" [(ngModel)]="course.estimatedEndDate" class="form-control" style="width: 100px;"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!course.editing; else editCourseSubjectMatterExpert">
+                                        {{ course.subjectMatterExpert }}
+                                    </ng-container>
+                                    <ng-template #editCourseSubjectMatterExpert>
+                                        <input [(ngModel)]="course.subjectMatterExpert" class="form-control"/>
+                                    </ng-template>
+                                </td>
+
+                                <td style="width: 150px;">
+
+                                    <button type="button" class="btn btn-default btn-circle-edit edit-button"
+                                        (click)="editCourse(course)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="saveCourse(course)" *ngIf="course.editing"
+                                        class="btn btn-default btn-circle-save save-button">
+                                        <mat-icon>save</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="cancelEdit(course)" *ngIf="course.editing"
+                                        class="btn btn-default btn-circle-cancel cancel-button">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>

@@ -12,12 +12,33 @@
                     <div class="col-md-3 mb-3" *ngFor="let batch of batches">
                         <div class="card batch-card" style="width: 15rem;">
                             <div class="card-body">
-                                <h2 class="card-title">{{ batch.batchId }}</h2>
-                                <h5 class="card-subtitle mb-2 text-body-secondary">{{ batch.batchName }}</h5>
-                                <p>{{ batch.batchDescription }}</p>
+                                <div *ngIf="!batch.editing">
+                                    <h2 class="card-title">{{ batch.batchId }}</h2>
+                                    <h5 class="card-subtitle mb-2 text-body-secondary">{{ batch.batchName }}</h5>
+                                    <p>{{ batch.batchDescription }}</p>
+                                </div>
+                                <div *ngIf="batch.editing">
+                                    <input [(ngModel)]="batch.batchId" class="form-control mb-3" disabled/>
+                                    <input [(ngModel)]="batch.batchName" class="form-control mb-3" />
+                                    <input [(ngModel)]="batch.batchDescription" class="form-control mb-3" />
+                                </div>
+                                <div class="buttons">
+                                    <button mat-icon-button (click)="editBatch(batch)" class="btn btn-default btn-circle-edit edit-button">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="saveBatch(batch)" *ngIf="batch.editing" class="btn btn-default btn-circle-save save-button">
+                                        <mat-icon>save</mat-icon>
+                                    </button>
+                                    <button mat-icon-button (click)="cancelEdit(batch)" *ngIf="batch.editing" class="btn btn-default btn-circle-cancel cancel-button">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    
+
+
                 </div>
             </div>
         </div>

@@ -18,8 +18,13 @@ public class CourseProgressController {
         return this.courseProgressService.getCoursesProgressByTraineeEmailId(emailId);
     }
 
+    @GetMapping("/progress/{emailId}/{courseId}")
+    public CourseProgress getCourseProgressByTraineeEmailIdAndCourseId(@PathVariable String emailId, @PathVariable String courseId) {
+        return this.courseProgressService.getCourseProgressByTraineeEmailIdAndCourseId(emailId,courseId);
+    }
+
     @PutMapping("/progress")
-    public String updateCourseProgress(@RequestBody CourseProgress courseProgress) {
+    public CourseProgress updateCourseProgress(@RequestBody CourseProgress courseProgress) {
         return this.courseProgressService.updateCourseProgress(courseProgress);
     }
 

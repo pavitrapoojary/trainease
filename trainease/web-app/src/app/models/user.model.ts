@@ -1,8 +1,11 @@
+import { Batch } from "./batch.model";
+
 export interface User {
     emailId: string;
     name: string;
     role: UserRole;
-    batchId: string;
+    batch: Batch;
+    editing:boolean
 }
 
 export enum UserRole {

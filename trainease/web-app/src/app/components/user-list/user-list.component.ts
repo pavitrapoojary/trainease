@@ -20,6 +20,19 @@ export class UserListComponent implements OnInit {
   selectedBatch: string = '';
   selectedEmailId: string = '';
   selectedUserRole: string = '';
+  sortDirection: number = 1;
+  originalUser: User = {
+    emailId: '',
+    name: '',
+    role: UserRole.ADMIN,
+    batch: {
+      batchId: '',
+      batchName: '',
+      batchDescription: '',
+      editing: false
+    },
+    editing: false
+  }
 
   constructor(private userService: UserService, private batchService: BatchService) {
     this.fetchBatchIds();
@@ -66,25 +79,44 @@ export class UserListComponent implements OnInit {
     this.selectedBatch = '';
   }
 
-  applyFilters(): void {
-    this.filteredUsers = this.users.filter((user) => {
-      const roleMatch =
-        !this.selectedRole || user.role === this.selectedRole;
-      const batchIdMatch =
-        !this.selectedBatchId || user.batchId.includes(this.selectedBatchId);
-
-      return roleMatch && batchIdMatch;
-    });
-  }
-
-  deleteUser(emailId: string) {
-    this.userService.deleteUserByEmailId(emailId).subscribe((data) => {
+  deleteUser(user: User) {
+    this.userService.deleteUserByEmailId(user.emailId).subscribe((data) => {
       console.log(data);
       this.getAllUsers();
     });
 
   }
 
-  editUser() { }
+  editUser(user: User) {
+    this.originalUser.emailId = user.emailId;
+    this.originalUser.name = user.name;
+    this.originalUser.role = user.role;
+    this.originalUser.batch = user.batch;
+    user.editing = true;
+  }
+
+  saveUser(user: User) {
+    if(user.role === UserRole.TRAINEE){
+      user.batch.batchId = this.selectedBatch;
+    }
+    this.userService.updateUser(user).subscribe((data) => {
+      user = data;
+    });
+    user.editing = false;
+  }
+
+  cancelEdit(user: User) {
+    user.name = this.originalUser.name;
+    user.role = this.originalUser.role;
+    user.batch = this.originalUser.batch;
+    user.editing = false;
+  }
+
+  sortByName(): void {
+    this.users.sort((a, b) => {
+      return this.sortDirection * a.name.localeCompare(b.name);
+    });
+    this.sortDirection *= -1;
+  }
 
 }

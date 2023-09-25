@@ -13,7 +13,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <label for="roleFilter">Email ID : </label>
-                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId" name="emailId"required>
+                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId"
+                                    name="emailId" required>
                             </div>
                             <div class="col-md-4" style="margin-top: 20px;">
                                 <button type="button" class="btn btn-default btn-circle-search search-button"
@@ -44,15 +45,20 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let progress of progresses" style="text-align: center;">
-                                <td>{{ progress.courseId }}</td>
-                                <td>{{ progress.courseName }}</td>
-                                <td>{{ progress.durationInHours }} hours</td>
-                                <td>{{ progress.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
-                                <td>{{ progress.estimatedEndDate | date:'dd-MM-yyyy' }}</td>
-                                <td>{{ progress.status }}</td>
+                                <td>{{ progress.course.courseId }}</td>
+                                <td>{{ progress.course.courseName }}</td>
+                                <td>{{ progress.course.durationInHours }} hours</td>
+                                <td>{{ progress.course.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
+                                <td>{{ progress.course.estimatedEndDate | date:'dd-MM-yyyy' }}</td>
+                                <td [style.background-color]="getStatusBgColor(progress.status)"
+                                    [style.color]="getStatusColor(progress.status)">{{ progress.status }}</td>
                                 <td>{{ progress.feedback }}</td>
-                                <td>{{ progress.actualStartDate | date:'dd-MM-yyyy' }}</td>
-                                <td>{{ progress.actualEndDate | date:'dd-MM-yyyy' }}</td>
+                                <td
+                                    [style.color]="getActualDateTextColor(progress.course.estimatedStartDate, progress.actualStartDate)">
+                                    {{ progress.actualStartDate | date:'dd-MM-yyyy' }}</td>
+                                <td
+                                    [style.color]="getActualDateTextColor(progress.course.estimatedEndDate, progress.actualEndDate)">
+                                    {{ progress.actualEndDate | date:'dd-MM-yyyy' }}</td>
                             </tr>
                         </tbody>
                     </table>

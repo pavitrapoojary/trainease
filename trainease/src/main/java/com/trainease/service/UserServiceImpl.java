@@ -1,12 +1,16 @@
 package com.trainease.service;
 
+import com.trainease.ExcelParser;
 import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
 import com.trainease.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,21 +30,15 @@ public class UserServiceImpl implements UserService {
         if (role != null && role.equals(UserRole.TRAINEE) && batchId != null) {
             return userRepository.findAll()
                     .stream()
-                    .filter(user -> user.getRole().equals(role) && user.getBatchId().equals(batchId))
+                    .filter(user -> user.getRole().equals(role) && user.getBatch().getBatchId().equals(batchId))
                     .collect(Collectors.toList());
         }
         if (role != null) {
-            return userRepository.findAll()
-                    .stream()
-                    .filter(user -> user.getRole().equals(role))
-                    .collect(Collectors.toList());
+            return userRepository.findByUserRole(role);
         }
 
         if (batchId != null) {
-            return userRepository.findAll()
-                    .stream()
-                    .filter(user -> user.getBatchId() != null && user.getBatchId().equals(batchId))
-                    .collect(Collectors.toList());
+            return userRepository.findByBatchId(batchId);
         }
 
         return userRepository.findAll();
@@ -56,49 +54,63 @@ public class UserServiceImpl implements UserService {
         if (user.getRole().equals(UserRole.TRAINEE)) {
             List<Course> allCoursesForGivenBatchId = courseRepository.findAll()
                     .stream()
-                    .filter(course -> course.getBatchId().equals(user.getBatchId()))
+                    .filter(course -> course.getBatch().getBatchId().equals(user.getBatch().getBatchId()))
                     .toList();
+            userRepository.save(user);
             for (Course currentCourse : allCoursesForGivenBatchId) {
                 CourseProgress courseProgress = CourseProgress.builder()
-                        .emailId(user.getEmailId()).batchId(user.getBatchId())
-                        .courseId(currentCourse.getCourseId())
-                        .courseName(currentCourse.getCourseName())
-                        .description(currentCourse.getDescription())
-                        .link(currentCourse.getLink())
-                        .durationInHours(currentCourse.getDurationInHours())
-                        .estimatedStartDate(currentCourse.getEstimatedStartDate())
-                        .estimatedEndDate(currentCourse.getEstimatedEndDate())
-                        .subjectMatterExpert(currentCourse.getSubjectMatterExpert())
+                        .user(user)
+                        .batch(user.getBatch())
+                        .course(currentCourse)
                         .status(CourseStatus.TO_BE_STARTED)
                         .build();
                 courseProgressRepository.save(courseProgress);
             }
+        } else if (user.getRole().equals(UserRole.ADMIN) || user.getRole().equals(UserRole.SME)) {
+            user.setBatch(null);
+            userRepository.save(user);
         }
-        return userRepository.save(user);
+        return user;
     }
 
     @Override
-    public String updateUser(User user) {
-        //future scope
-        Optional<User> existingUserOptional = userRepository.findById(user.getEmailId());
+    public User updateUser(User updatedUser) {
+        if (updatedUser == null || updatedUser.getEmailId() == null) {
+            throw new IllegalArgumentException("Invalid user data or user email id.");
+        }
+        Optional<User> existingUserOptional = userRepository.findById(updatedUser.getEmailId());
         if (existingUserOptional.isPresent()) {
             User existingUser = existingUserOptional.get();
-            existingUser.setName(user.getName());
-            existingUser.setRole(user.getRole());
-            existingUser.setBatchId(user.getBatchId());
-            userRepository.save(existingUser);
-            return "User " + user.getEmailId() + " updated successfully!";
+            existingUser.setName(updatedUser.getName());
+            existingUser.setRole(updatedUser.getRole());
+            existingUser.setBatch(updatedUser.getBatch());
+            return userRepository.save(existingUser);
         }
-        return "User " + user.getEmailId() + " does not exist.";
+        throw new EntityNotFoundException("User not found.");
     }
 
     @Override
     public String deleteUserByEmailId(String emailId) {
+        if (emailId == null) {
+            throw new IllegalArgumentException("Invalid emailId.");
+        }
         if (userRepository.findById(emailId).isPresent()) {
+            if (userRepository.findById(emailId).get().getRole().equals(UserRole.TRAINEE)) {
+                courseProgressRepository.deleteCourseProgressByEmailId(emailId);
+            }
             userRepository.deleteById(emailId);
             return "User " + emailId + " deleted successfully!";
         }
-        return "User " + emailId + " does not exist.";
+        throw new EntityNotFoundException("User " + emailId + " does not exist.");
+    }
+
+    @Override
+    public List<User> saveUsersFromExcel(MultipartFile excelFile) throws IOException {
+        List<User> users = ExcelParser.parseUserExcel(excelFile.getInputStream());
+        for (User user : users) {
+            createUser(user);
+        }
+        return users;
     }
 
 }

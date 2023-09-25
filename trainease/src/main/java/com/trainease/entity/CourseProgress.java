@@ -1,16 +1,15 @@
 package com.trainease.entity;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
-import java.util.List;
 
-@Document(collection = "course_progress")
+@Entity
+@Table(name = "course_progress")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,19 +17,31 @@ import java.util.List;
 public class CourseProgress {
 
     @Id
-    private String id;
-    private String emailId;
-    private String batchId;
-    private String courseId;
-    private String courseName;
-    private String description;
-    private String link;
-    private double durationInHours;
-    private Date estimatedStartDate;
-    private Date estimatedEndDate;
-    private List<SubjectMatterExpert> subjectMatterExpert;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "progress_id")
+    private Integer progressId;
+
+    @ManyToOne
+    @JoinColumn(name = "email_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "batch_id")
+    private Batch batch;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
+    @Column(name = "status")
     private CourseStatus status;
+
+    @Column(name = "feedback")
     private String feedback;
+
+    @Column(name = "actual_start_date")
     private Date actualStartDate;
+
+    @Column(name = "actual_end_date")
     private Date actualEndDate;
 }

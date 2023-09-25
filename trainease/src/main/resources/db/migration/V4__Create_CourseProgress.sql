@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS course_progress (
+    progress_id INT AUTO_INCREMENT PRIMARY KEY,
+    email_id VARCHAR(255) NOT NULL,
+    batch_id VARCHAR(255) NOT NULL,
+    course_id VARCHAR(255) NOT NULL,
+    course_name VARCHAR(255) NOT NULL,
+    description VARCHAR(255),
+    link VARCHAR(255),
+    duration_in_hours DOUBLE,
+    estimated_start_date DATE,
+    estimated_end_date DATE,
+    subject_matter_expert VARCHAR(255),
+    status VARCHAR(255),
+    feedback VARCHAR(255),
+    actual_start_date DATE,
+    actual_end_date DATE,
+    FOREIGN KEY (email_id) REFERENCES users(email_id),
+    FOREIGN KEY (batch_id) REFERENCES batches(batch_id),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id)
+);

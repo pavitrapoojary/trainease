@@ -14,12 +14,18 @@ public class BatchController {
     BatchService batchService;
 
     @GetMapping("/batches")
-    public List<Batch>getAllBatches(){
+    public List<Batch> getAllBatches() {
         return this.batchService.getAllBatches();
     }
 
     @PostMapping("/batches")
-    public Batch createBatch(@RequestBody Batch batch){
+    public Batch createBatch(@RequestBody Batch batch) {
         return this.batchService.createBatch(batch);
     }
+
+    @PutMapping("/batches")
+    public Batch updateBatch(@RequestBody Batch batch) {
+        return this.batchService.updateBatch(batch);
+    }
+
 }

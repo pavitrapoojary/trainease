@@ -1,13 +1,14 @@
-import { SME } from "./sme.model";
+import { Batch } from "./batch.model";
 
 export interface Course {
     courseId: string;
-    batchId: string;
+    batch: Batch;
     courseName: string;
     description: string;
     link: string;
     durationInHours: number;
     estimatedStartDate: Date;
     estimatedEndDate: Date;
-    subjectMatterExpert: SME[];
+    subjectMatterExpert: string;
+    editing:boolean;
 }

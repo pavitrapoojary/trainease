@@ -15,7 +15,8 @@
                                 <label for="roleFilter">User Role : </label>
                                 <select class="form-select" id="roleFilter" [(ngModel)]="selectedUserRole">
                                     <option value="">All Roles</option>
-                                    <option *ngFor="let userRole of userRoles" [value]="userRole">{{ userRole }}</option>
+                                    <option *ngFor="let userRole of userRoles" [value]="userRole">{{ userRole }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-4" style="margin-top: 20px;">
@@ -33,11 +34,13 @@
                                 <label for="batchFilter">Training Batch ID:</label>
                                 <select class="form-select" id="batchFilter" [(ngModel)]="selectedBatch">
                                     <option value="">All Batches</option>
-                                    <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}</option>
+                                    <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}
+                                    </option>
                                 </select>
                             </div>
                             <div class="col-md-4" style="margin-top: 20px;">
-                                <button type="button" class="btn btn-default btn-circle-search search-button" (click)="getBatchSpecificTrainees()">
+                                <button type="button" class="btn btn-default btn-circle-search search-button"
+                                    (click)="getBatchSpecificTrainees()">
                                     <mat-icon>search</mat-icon>
                                 </button>
                             </div>
@@ -48,7 +51,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <label for="roleFilter">Email ID : </label>
-                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId" name="emailId"required>
+                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId"
+                                    name="emailId" required>
                             </div>
                             <div class="col-md-4" style="margin-top: 20px;">
                                 <button type="button" class="btn btn-default btn-circle-search search-button"
@@ -59,7 +63,7 @@
                         </div>
                     </div>
 
-                    
+
                 </div>
 
 
@@ -68,7 +72,7 @@
                     <table class="table">
                         <thead>
                             <tr style="text-align: center;">
-                                <th>Name</th>
+                                <th (click)="sortByName()">Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>Batch ID</th>
@@ -76,26 +80,81 @@
                             </tr>
                         </thead>
                         <tbody>
+
                             <tr *ngFor="let user of users" style="text-align: center;">
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.emailId }}</td>
-                                <td>{{ user.role }}</td>
-                                <td>{{ user.batchId }}</td>
+
+                                <td>
+                                    <ng-container *ngIf="!user.editing; else editFieldName">
+                                        {{ user.name }}
+                                    </ng-container>
+                                    <ng-template #editFieldName>
+                                        <input [(ngModel)]="user.name" class="form-control" />
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!user.editing; else editFieldEmail">
+                                        {{ user.emailId }}
+                                    </ng-container>
+                                    <ng-template #editFieldEmail>
+                                        {{ user.emailId }}
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!user.editing; else editFieldRole">
+                                        {{ user.role }}
+                                    </ng-container>
+                                    <ng-template #editFieldRole>
+                                        {{ user.role }}
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!user.editing; else editFieldBatch">
+                                        {{ user.batch === null ? 'N/A' : user.batch.batchId }}
+                                    </ng-container>
+                                    <ng-template #editFieldBatch>
+                                        {{ user.batch === null ? 'N/A' : user.batch.batchId }}
+                                    </ng-template>
+                                </td>
+
                                 <td>
                                     <button type="button" class="btn btn-default btn-circle-delete delete-button"
-                                        (click)="deleteUser(user.emailId)">
+                                        (click)="deleteUser(user)">
                                         <mat-icon>delete</mat-icon>
                                     </button>
 
                                     <button type="button" class="btn btn-default btn-circle-edit edit-button"
-                                        (click)="editUser()">
+                                        (click)="editUser(user)">
                                         <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="saveUser(user)" *ngIf="user.editing"
+                                        class="btn btn-default btn-circle-save save-button">
+                                        <mat-icon>save</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="cancelEdit(user)" *ngIf="user.editing"
+                                        class="btn btn-default btn-circle-cancel cancel-button">
+                                        <mat-icon>cancel</mat-icon>
                                     </button>
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
                 </div>
+
+
+
+                <!-- <div class="table-container">
+                    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" 
+                        [rowData]="users"
+                        [columnDefs]="columnDefs">
+                    </ag-grid-angular>
+                </div> -->
+
             </div>
 
         </div>

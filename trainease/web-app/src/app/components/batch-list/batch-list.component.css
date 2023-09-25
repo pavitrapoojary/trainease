@@ -1,3 +1,55 @@
 .batch-card{
     border: 5px solid rgb(24, 24, 222); 
 }
+
+.edit-button mat-icon {
+    font-size: 17px;
+    color: white;
+}
+
+.save-button mat-icon {
+    font-size: 17px;
+    color: white;
+}
+
+.cancel-button mat-icon {
+    font-size: 17px;
+    color: white;
+}
+
+.btn-circle-edit {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: rgb(216, 192, 8);
+}
+
+.btn-circle-save {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: rgb(21, 158, 0);
+}
+
+.btn-circle-cancel {
+    margin-right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+    background-color: rgb(0, 0, 0);
+}

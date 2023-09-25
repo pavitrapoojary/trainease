@@ -16,8 +16,12 @@ export class BatchService {
     return this.http.get<Batch[]>(`${this.baseUrl}/batches`);
   }
 
-  createBatch(batch:Batch):Observable<Batch[]>{
-    return this.http.post<Batch[]>(`${this.baseUrl}/batches`,batch);
+  createBatch(batch: Batch): Observable<Batch[]> {
+    return this.http.post<Batch[]>(`${this.baseUrl}/batches`, batch);
+  }
+
+  updateBatch(batch: Batch): Observable<Batch> {
+    return this.http.put<Batch>(`${this.baseUrl}/batches`, batch);
   }
 
 }

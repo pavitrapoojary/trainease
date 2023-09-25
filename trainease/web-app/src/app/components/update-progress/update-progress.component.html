@@ -1,1 +1,152 @@
-<p>update-progress works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+            <div class="container">
+                <h1 style="padding-top: 30px;">Update Course Progress</h1>
+
+                <div class="row mb-2">
+
+                    <div class="col-md-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="email">Email ID : </label>
+                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId"
+                                    name="emailId" required>
+                            </div>
+
+                            <div class="col-md-4" style="margin-top: 20px;">
+                                <button type="button" class="btn btn-default btn-circle-search search-button"
+                                    (click)="getCurrentCourseProgress()">
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="table-container">
+
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align: center;">
+                                <th>Course Name</th>
+                                <th>Estimated Start Date</th>
+                                <th>Estimated End Date</th>
+                                <th>Status</th>
+                                <th>Actual Start Date</th>
+                                <th>Actual End Date</th>
+                                <th>Feedback</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let courseProgress of courseProgresses" style="text-align: center;">
+
+                                <td>
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseId">
+                                        {{ courseProgress.course.courseName }}
+                                    </ng-container>
+                                    <ng-template #editCourseId>
+                                        {{ courseProgress.course.courseName }}
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseEstimatedStartDate">
+                                        {{ courseProgress.course.estimatedStartDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseEstimatedStartDate>
+                                        {{ courseProgress.course.estimatedStartDate | date:'dd-MM-yyyy' }}
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseEstimatedEndDate">
+                                        {{ courseProgress.course.estimatedEndDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseEstimatedEndDate>
+                                        {{ courseProgress.course.estimatedEndDate | date:'dd-MM-yyyy' }}
+                                    </ng-template>
+                                </td>
+
+                                <td [style.background-color]="getStatusBgColor(courseProgress.status)"
+                                [style.color]="getStatusColor(courseProgress.status)">
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseStatus">
+                                        {{ courseProgress.status }}
+                                    </ng-container>
+                                    <ng-template #editCourseStatus>
+                                        <select class="form-select" id="statusFilter" [(ngModel)]="courseProgress.status" name="status"
+                                            required>
+                                            <option *ngFor="let status of statuses" [value]="status">{{ status }}
+                                            </option>
+                                        </select>
+                                    </ng-template>
+                                </td>
+
+                                <td [style.color]="getActualDateTextColor(courseProgress.course.estimatedStartDate, courseProgress.actualStartDate)">
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseActualStartDate">
+                                        {{ courseProgress.actualStartDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseActualStartDate>
+                                        <input type="date" [(ngModel)]="courseProgress.actualStartDate"
+                                            class="form-control" style="width: 100px;"/>
+                                    </ng-template>
+                                </td>
+
+                                <td [style.color]="getActualDateTextColor(courseProgress.course.estimatedEndDate, courseProgress.actualEndDate)">
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseActualEndDate">
+                                        {{ courseProgress.actualEndDate | date:'dd-MM-yyyy' }}
+                                    </ng-container>
+                                    <ng-template #editCourseActualEndDate >
+                                        <input type="date" [(ngModel)]="courseProgress.actualEndDate"
+                                            class="form-control" style="width: 100px;"/>
+                                    </ng-template>
+                                </td>
+
+                                <td>
+                                    <ng-container *ngIf="!courseProgress.editing; else editCourseFeedback">
+                                        {{ courseProgress.feedback }}
+                                    </ng-container>
+                                    <ng-template #editCourseFeedback>
+                                        <input [(ngModel)]="courseProgress.feedback" class="form-control" />
+                                    </ng-template>
+                                </td>
+
+                                <td style="width: 150px;">
+
+                                    <button type="button" class="btn btn-default btn-circle-edit edit-button"
+                                        (click)="editCourseProgress(courseProgress)">
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="saveCourseProgress(courseProgress)"
+                                        *ngIf="courseProgress.editing"
+                                        class="btn btn-default btn-circle-save save-button">
+                                        <mat-icon>save</mat-icon>
+                                    </button>
+
+                                    <button mat-icon-button (click)="cancelEdit(courseProgress)"
+                                        *ngIf="courseProgress.editing"
+                                        class="btn btn-default btn-circle-cancel cancel-button">
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

@@ -10,16 +10,27 @@ import { BatchService } from 'src/app/services/batch.service';
 export class CreateBatchComponent {
   batch: Batch = {
     batchId: '',
-    batchName:'',
-    batchDescription:''
+    batchName: '',
+    batchDescription: '',
+    editing:false
   };
+  isBatchCreated: boolean = false;
+  isBatchCreateError: boolean = false;
+  errorMessage: string = 'Batch creation error : ';
 
-  constructor(private batchService:BatchService){}
+  constructor(private batchService: BatchService) { }
 
-  onSubmit():void {
-    this.batchService.createBatch(this.batch).subscribe((result)=>{
-      console.log(JSON.stringify(result)+": batch added");
-    })
+  onSubmit(): void {
+    this.batchService.createBatch(this.batch).subscribe(
+      (result) => {
+        console.log(JSON.stringify(result) + ": batch added");
+        this.isBatchCreated = true;
+      },
+      (error) => {
+        console.error("Error occurred while creating a training batch:", error);
+        this.errorMessage += error.error.message;
+        this.isBatchCreateError = true;
+      })
   }
 
 }

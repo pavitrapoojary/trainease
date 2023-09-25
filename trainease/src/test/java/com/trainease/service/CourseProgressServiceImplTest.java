@@ -1,7 +1,6 @@
 package com.trainease.service;
 
-import com.trainease.entity.CourseProgress;
-import com.trainease.entity.CourseStatus;
+import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,14 +27,29 @@ class CourseProgressServiceImplTest {
     void getCoursesProgressByEmailIdWhenEmailIdExists() {
         String traineeEmailId = "trainee1@gmail.com";
         CourseProgress courseProgress = CourseProgress.builder()
-                .emailId(traineeEmailId).batchId("B1").courseId("C1").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId(traineeEmailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C1").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         CourseProgress courseProgress1 = CourseProgress.builder()
-                .emailId(traineeEmailId).batchId("B1").courseId("C2").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId(traineeEmailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C2").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         CourseProgress courseProgress2 = CourseProgress.builder()
-                .emailId("trainee3@gmail.com").batchId("B2").courseId("C3").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId("trainee3@gmail.com").build())
+                .batch(Batch.builder().batchId("B2").build())
+                .course(Course.builder().courseId("C3").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         List<CourseProgress> allCourseProgressList = Arrays.asList(courseProgress, courseProgress1, courseProgress2);
         List<CourseProgress> expectedCourseProgressList = Arrays.asList(courseProgress, courseProgress1);
         when(courseProgressRepository.findAll()).thenReturn(allCourseProgressList);
@@ -48,14 +62,29 @@ class CourseProgressServiceImplTest {
     void getCoursesProgressByEmailIdWhenEmailIdDoesNotExist() {
         String traineeEmailId = "trainee1@gmail.com";
         CourseProgress courseProgress = CourseProgress.builder()
-                .emailId(traineeEmailId).batchId("B1").courseId("C1").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId(traineeEmailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C1").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         CourseProgress courseProgress1 = CourseProgress.builder()
-                .emailId(traineeEmailId).batchId("B1").courseId("C2").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId(traineeEmailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C2").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         CourseProgress courseProgress2 = CourseProgress.builder()
-                .emailId("trainee3@gmail.com").batchId("B2").courseId("C3").courseName("cName")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
+                .user(User.builder().emailId("trainee3@gmail.com").build())
+                .batch(Batch.builder().batchId("B2").build())
+                .course(Course.builder().courseId("C3").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         List<CourseProgress> allCourseProgressList = Arrays.asList(courseProgress, courseProgress1, courseProgress2);
         when(courseProgressRepository.findAll()).thenReturn(allCourseProgressList);
         List<CourseProgress> actualCourseProgressList = courseProgressService.getCoursesProgressByTraineeEmailId("doesnotexist@gmail.com");
@@ -63,33 +92,50 @@ class CourseProgressServiceImplTest {
     }
 
     @Test
-    void updateCourseProgressWhenProgressExists() {
-        String emailId = "trainee1@gmail.com";
-        CourseProgress existingCourseProgress = CourseProgress.builder()
-                .emailId(emailId).batchId("B1").courseId("C1")
-                .status(CourseStatus.TO_BE_STARTED).feedback("NA").build();
-        CourseProgress updatedCourseProgress = CourseProgress.builder()
-                .emailId(emailId).batchId("B1").courseId("C1")
-                .status(CourseStatus.IN_PROGRESS).feedback("NA").build();
-        when(courseProgressRepository.findByEmailIdAndCourseId(emailId, existingCourseProgress.getCourseId())).thenReturn(Optional.of(existingCourseProgress));
-        when(courseProgressRepository.save(any(CourseProgress.class))).thenReturn(updatedCourseProgress);
-        String actualResult = courseProgressService.updateCourseProgress(updatedCourseProgress);
-        assertEquals("Progress for Course ID : "+existingCourseProgress.getCourseId()+" has been updated!", actualResult);
-        verify(courseProgressRepository).findByEmailIdAndCourseId(emailId, existingCourseProgress.getCourseId());
-        verify(courseProgressRepository).save(any(CourseProgress.class));
+    void getCourseProgressByTraineeEmailIdAndCourseId() {
+        String traineeEmailId = "trainee1@gmail.com";
+        CourseProgress courseProgress = CourseProgress.builder()
+                .user(User.builder().emailId(traineeEmailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C1").courseName("cName").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
+        when(courseProgressRepository.findByEmailIdAndCourseId(traineeEmailId, "C1")).thenReturn(Optional.ofNullable(courseProgress));
+        CourseProgress actualProgress = courseProgressService.getCourseProgressByTraineeEmailIdAndCourseId(traineeEmailId, "C1");
+        assertNotNull(actualProgress);
+        assertEquals(courseProgress.getCourse().getCourseName(), actualProgress.getCourse().getCourseName());
+        verify(courseProgressRepository).findByEmailIdAndCourseId(traineeEmailId, "C1");
     }
 
     @Test
-    void updateCourseProgressWhenProgressDoesNotExist() {
+    void updateCourseProgressWhenProgressExists() {
         String emailId = "trainee1@gmail.com";
+        CourseProgress existingCourseProgress = CourseProgress.builder()
+                .user(User.builder().emailId(emailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C1").build())
+                .status(CourseStatus.TO_BE_STARTED)
+                .feedback("NA")
+                .build();
+
         CourseProgress updatedCourseProgress = CourseProgress.builder()
-                .emailId(emailId).batchId("B1").courseId("C1")
-                .status(CourseStatus.IN_PROGRESS).feedback("NA").build();
-        when(courseProgressRepository.findByEmailIdAndCourseId(emailId, updatedCourseProgress.getCourseId())).thenReturn(Optional.empty());
-        String actualResult = courseProgressService.updateCourseProgress(updatedCourseProgress);
-        assertEquals("Course ID : "+updatedCourseProgress.getCourseId()+" does not exist for Trainee Email ID : "+updatedCourseProgress.getEmailId(), actualResult);
-        verify(courseProgressRepository, never()).save(any(CourseProgress.class));
+                .user(User.builder().emailId(emailId).build())
+                .batch(Batch.builder().batchId("B1").build())
+                .course(Course.builder().courseId("C1").build())
+                .status(CourseStatus.IN_PROGRESS)
+                .feedback("NA")
+                .build();
+
+        when(courseProgressRepository.findByEmailIdAndCourseId(emailId, existingCourseProgress.getCourse().getCourseId())).thenReturn(Optional.of(existingCourseProgress));
+        when(courseProgressRepository.save(any(CourseProgress.class))).thenReturn(updatedCourseProgress);
+        CourseProgress actualResult = courseProgressService.updateCourseProgress(updatedCourseProgress);
+        assertEquals(updatedCourseProgress.getStatus(), actualResult.getStatus());
+        verify(courseProgressRepository).findByEmailIdAndCourseId(emailId, existingCourseProgress.getCourse().getCourseId());
+        verify(courseProgressRepository).save(any(CourseProgress.class));
     }
+
 }
 
 

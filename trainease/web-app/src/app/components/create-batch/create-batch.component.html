@@ -24,6 +24,14 @@
 
                     <button type="submit" class="btn btn-primary create-batch-btn">Create</button>
                 </form>
+
+                <div *ngIf="isBatchCreated" class="alert alert-success mt-3">
+                    Batch created successfully!
+                </div>
+
+                <div *ngIf="isBatchCreateError" class="alert alert-danger mt-3">
+                    {{errorMessage}}
+                </div>
             </div>
         </div>
     </div>

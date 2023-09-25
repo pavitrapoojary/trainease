@@ -1,21 +1,17 @@
-import { SME } from "./sme.model";
+import { Batch } from "./batch.model";
+import { Course } from "./course.model";
+import { User } from "./user.model";
 
 export interface CourseProgress {
-    id:string;
-    emailId:string;
-    batchId: string;
-    courseId: string;
-    courseName: string;
-    description: string;
-    link: string;
-    durationInHours: number;
-    estimatedStartDate: Date;
-    estimatedEndDate: Date;
-    subjectMatterExpert: SME[];
+    progressId:number;
+    user:User;
+    batch:Batch;
+    course:Course;
     status:Status;
     feedback:string;
     actualStartDate:Date;
     actualEndDate:Date;
+    editing:boolean;
 }
 
 export enum Status {

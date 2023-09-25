@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpClientModule, HttpParams } from '@angular/common/http'
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
+import { User, UserRole } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,11 +37,17 @@ export class UserService {
     return this.http.post<User[]>(`${this.baseUrl}/users`,user);
   }
 
-  updateUser(user:User):Observable<string>{
-    return this.http.put<string>(`${this.baseUrl}/users`,user);
+  updateUser(user:User):Observable<User>{
+    return this.http.put<User>(`${this.baseUrl}/users`,user);
   }
 
   deleteUserByEmailId(emailId:string):Observable<string>{
     return this.http.delete(`${this.baseUrl}/users/${emailId}`,{responseType:'text'});
+  }
+
+  uploadExcelFile(file:File):Observable<User[]>{
+    const formData = new FormData();
+    formData.append('file',file);
+    return this.http.post<User[]>(`${this.baseUrl}/users/saveExcel`,formData);
   }
 }

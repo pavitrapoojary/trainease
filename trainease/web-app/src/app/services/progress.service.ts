@@ -14,4 +14,12 @@ export class ProgressService {
   getCoursesProgressByTraineeEmailId(emailId:string):Observable<CourseProgress[]>{
     return this.http.get<CourseProgress[]>(`${this.baseUrl}/${emailId}/progress`);
   }
+
+  getCourseProgressByTraineeEmailIdAndCourseId(emailId:string,courseId:string):Observable<CourseProgress>{
+    return this.http.get<CourseProgress>(`${this.baseUrl}/progress/${emailId}/${courseId}`);
+  }
+
+  updateCourseProgress(courseProgress:CourseProgress):Observable<CourseProgress>{
+    return this.http.put<CourseProgress>(`${this.baseUrl}/progress`,courseProgress);
+  }
 }
