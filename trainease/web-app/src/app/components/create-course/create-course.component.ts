@@ -11,7 +11,8 @@ import { CourseService } from 'src/app/services/course.service';
   styleUrls: ['./create-course.component.css']
 })
 export class CreateCourseComponent {
-
+  displayForm = false;
+  displayExcel = false;
   batches: Batch[] = [];
   selectedBatch: string = '';
   course: Course = {
@@ -51,11 +52,9 @@ export class CreateCourseComponent {
     this.course.batch.batchId = this.selectedBatch;
     this.courseService.createCourse(this.course).subscribe(
       (result) => {
-        console.log(result + " course added.");
         this.isCourseAddedByForm = true;
       },
       (error) => {
-        console.error("Error occurred while creating new course ", error);
         this.errorMessageForm += error.error.message;
         this.isErrorOccurredByForm = true;
       });
@@ -68,16 +67,24 @@ export class CreateCourseComponent {
       if (file) {
         this.courseService.uploadExcelFile(file).subscribe(
           (result) => {
-            console.log("Courses created from the excel file.", result);
             this.isCourseAddedByExcel = true;
           },
           (error) => {
-            console.error("Error occurred while uploading the file:", error);
             this.errorMessage += error.error.message;
             this.isErrorOccurredBySavingExcel = true;
           });
       }
     }
+  }
+
+  displayAddCourseForm() {
+    this.displayExcel = false;
+    this.displayForm = true;
+  }
+
+  displayExcelOption() {
+    this.displayForm = false;
+    this.displayExcel = true;
   }
 
 }

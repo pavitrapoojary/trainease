@@ -1,17 +1,21 @@
 package com.trainease.service;
 
-import com.trainease.ExcelParser;
+import com.trainease.helper.ExcelParser;
 import com.trainease.entity.Batch;
 import com.trainease.entity.Course;
+import com.trainease.helper.S3FileUploader;
 import com.trainease.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,6 +33,9 @@ class CourseServiceImplTest {
 
     @Mock
     private ExcelParser excelParser;
+
+    @Mock
+    private S3FileUploader s3FileUploader;
 
     @InjectMocks
     private CourseServiceImpl courseService;
@@ -185,22 +192,4 @@ class CourseServiceImplTest {
         verify(courseRepository, never()).save(any(Course.class));
     }
 
-//    @Test
-//    void saveCoursesFromExcel() throws IOException {
-//        MockMultipartFile mockMultipartFile = new MockMultipartFile(
-//                "test.xlsx", "test.xlsx", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", new byte[0]
-//        );
-//        List<Course> mockCourses = new ArrayList<>();
-//        Course course1 = Course.builder().courseId("C1").courseName("C1 course").build();
-//        Course course2 = Course.builder().courseId("C2").courseName("C2 course").build();
-//        mockCourses.add(course1);
-//        mockCourses.add(course2);
-//        when(ExcelParser.parseCourseExcel(Mockito.any(InputStream.class))).thenReturn(mockCourses);
-//        when(courseRepository.saveAll(Mockito.anyList())).thenReturn(mockCourses);
-//        String result = courseService.saveCoursesFromExcel(mockMultipartFile);
-//        verify(excelParser).parseCourseExcel(Mockito.any(InputStream.class));
-//        verify(courseRepository).saveAll(mockCourses);
-//        assertEquals("Courses saved!", result);
-//
-//    }
 }

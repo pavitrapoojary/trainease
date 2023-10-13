@@ -5,8 +5,7 @@
         </div>
 
         <div class="col-md-9">
-            <div class="container">
-                <h1 style="padding-top: 30px;">User List</h1>
+            <div class="container mt-5">
 
                 <div class="row mb-2">
                     <div class="col-md-4">
@@ -66,6 +65,10 @@
 
                 </div>
 
+                <div class="row" style="margin-top: 10px;">
+                    <p>Total users count : {{ totalUsersCount }}</p>
+                </div>
+
 
                 <div class="table-container">
 
@@ -121,12 +124,12 @@
 
                                 <td>
                                     <button type="button" class="btn btn-default btn-circle-delete delete-button"
-                                        (click)="deleteUser(user)">
+                                        (click)="deleteUser(user)" *ngIf="!user.editing">
                                         <mat-icon>delete</mat-icon>
                                     </button>
 
                                     <button type="button" class="btn btn-default btn-circle-edit edit-button"
-                                        (click)="editUser(user)">
+                                        (click)="editUser(user)" *ngIf="!user.editing">
                                         <mat-icon>edit</mat-icon>
                                     </button>
 
@@ -146,14 +149,21 @@
                     </table>
                 </div>
 
+                <div *ngIf="updateSuccess" class="alert alert-success mt-3">
+                    User updated successfully!
+                </div>
 
+                <div *ngIf="nothingToUpdate" class="alert alert-warning mt-3">
+                    No changes being made in order to update the user.
+                </div>
 
-                <!-- <div class="table-container">
-                    <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" 
-                        [rowData]="users"
-                        [columnDefs]="columnDefs">
-                    </ag-grid-angular>
-                </div> -->
+                <div *ngIf="updateError" class="alert alert-danger mt-3">
+                    User name cannot be empty or blank.
+                </div>
+
+                <div *ngIf="deleteSuccess" class="alert alert-success mt-3">
+                    User deleted successfully!
+                </div>
 
             </div>
 

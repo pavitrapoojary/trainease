@@ -6,30 +6,25 @@
 
         <div class="col-md-9">
             <div class="container">
-                <h1 style="padding-top: 30px;">Update Course Progress</h1>
+                <h1 style="padding-top: 30px; font-weight: bolder;">Track & Update Progress</h1>
 
-                <div class="row mb-2">
 
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <label for="email">Email ID : </label>
-                                <input type="text" class="form-control" id="emailId" [(ngModel)]="selectedEmailId"
-                                    name="emailId" required>
-                            </div>
+                <div class="row">
+                    <div class="col-md-4" style="margin-top: 30px;">
+                        <p>Total courses count : {{ totalCoursesCount }} </p>
+                    </div>
 
-                            <div class="col-md-4" style="margin-top: 20px;">
-                                <button type="button" class="btn btn-default btn-circle-search search-button"
-                                    (click)="getCurrentCourseProgress()">
-                                    <mat-icon>search</mat-icon>
-                                </button>
+                    <div class="col-md-6" style="margin-top: 30px;">
+                        <div class="horizontal-radio-container">
+                            <div *ngFor="let option of options">
+                                <input type="radio" id="{{option.id}}" name="radioGroup" [value]="option.value"
+                                    [(ngModel)]="selectedValue" (change)="onRadioChange(selectedValue)">
+                                <label for="{{option.id}}">{{option.label}}</label>
                             </div>
                         </div>
                     </div>
 
                 </div>
-
-                <hr>
 
                 <div class="table-container">
 
@@ -77,36 +72,36 @@
                                 </td>
 
                                 <td [style.background-color]="getStatusBgColor(courseProgress.status)"
-                                [style.color]="getStatusColor(courseProgress.status)">
+                                    [style.color]="getStatusColor(courseProgress.status)">
                                     <ng-container *ngIf="!courseProgress.editing; else editCourseStatus">
                                         {{ courseProgress.status }}
                                     </ng-container>
                                     <ng-template #editCourseStatus>
-                                        <select class="form-select" id="statusFilter" [(ngModel)]="courseProgress.status" name="status"
-                                            required>
+                                        <select class="form-select" id="statusFilter"
+                                            [(ngModel)]="courseProgress.status" name="status" required>
                                             <option *ngFor="let status of statuses" [value]="status">{{ status }}
                                             </option>
                                         </select>
                                     </ng-template>
                                 </td>
 
-                                <td [style.color]="getActualDateTextColor(courseProgress.course.estimatedStartDate, courseProgress.actualStartDate)">
+                                <td>
                                     <ng-container *ngIf="!courseProgress.editing; else editCourseActualStartDate">
                                         {{ courseProgress.actualStartDate | date:'dd-MM-yyyy' }}
                                     </ng-container>
                                     <ng-template #editCourseActualStartDate>
                                         <input type="date" [(ngModel)]="courseProgress.actualStartDate"
-                                            class="form-control" style="width: 100px;"/>
+                                            class="form-control" style="width: 100px;" />
                                     </ng-template>
                                 </td>
 
-                                <td [style.color]="getActualDateTextColor(courseProgress.course.estimatedEndDate, courseProgress.actualEndDate)">
+                                <td>
                                     <ng-container *ngIf="!courseProgress.editing; else editCourseActualEndDate">
                                         {{ courseProgress.actualEndDate | date:'dd-MM-yyyy' }}
                                     </ng-container>
-                                    <ng-template #editCourseActualEndDate >
+                                    <ng-template #editCourseActualEndDate>
                                         <input type="date" [(ngModel)]="courseProgress.actualEndDate"
-                                            class="form-control" style="width: 100px;"/>
+                                            class="form-control" style="width: 100px;" />
                                     </ng-template>
                                 </td>
 
@@ -122,7 +117,7 @@
                                 <td style="width: 150px;">
 
                                     <button type="button" class="btn btn-default btn-circle-edit edit-button"
-                                        (click)="editCourseProgress(courseProgress)">
+                                        (click)="editCourseProgress(courseProgress)" *ngIf="!courseProgress.editing">
                                         <mat-icon>edit</mat-icon>
                                     </button>
 

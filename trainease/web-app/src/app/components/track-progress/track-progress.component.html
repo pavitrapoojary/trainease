@@ -24,45 +24,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-4">
+                        <button (click)="exportToCSV()" class="export-button"> 📥 Export to CSV</button>
+                    </div>
                 </div>
 
-
-                <div class="table-container">
-
-                    <table class="table">
-                        <thead>
-                            <tr style="text-align: center;">
-                                <th>Course ID</th>
-                                <th>Course Name</th>
-                                <th>Duration</th>
-                                <th>Est. Start Date</th>
-                                <th>Est. End Date</th>
-                                <th>Status</th>
-                                <th>Feedback</th>
-                                <th>Actual Start Date</th>
-                                <th>Actual End Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let progress of progresses" style="text-align: center;">
-                                <td>{{ progress.course.courseId }}</td>
-                                <td>{{ progress.course.courseName }}</td>
-                                <td>{{ progress.course.durationInHours }} hours</td>
-                                <td>{{ progress.course.estimatedStartDate | date:'dd-MM-yyyy' }}</td>
-                                <td>{{ progress.course.estimatedEndDate | date:'dd-MM-yyyy' }}</td>
-                                <td [style.background-color]="getStatusBgColor(progress.status)"
-                                    [style.color]="getStatusColor(progress.status)">{{ progress.status }}</td>
-                                <td>{{ progress.feedback }}</td>
-                                <td
-                                    [style.color]="getActualDateTextColor(progress.course.estimatedStartDate, progress.actualStartDate)">
-                                    {{ progress.actualStartDate | date:'dd-MM-yyyy' }}</td>
-                                <td
-                                    [style.color]="getActualDateTextColor(progress.course.estimatedEndDate, progress.actualEndDate)">
-                                    {{ progress.actualEndDate | date:'dd-MM-yyyy' }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div style="margin-top: 50px;">
+                    <ag-grid-angular style="width:100%; height: 500px;" class="ag-theme-alpine" [rowData]="progresses"
+                        [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [domLayout]="'normal'"
+                        [pagination]="true" [paginationPageSize]="8" [animateRows]="true"
+                        [enableAdvancedFilter]="true" (gridReady)="onGridReady($event)" >
+                    </ag-grid-angular>
                 </div>
+
             </div>
 
         </div>

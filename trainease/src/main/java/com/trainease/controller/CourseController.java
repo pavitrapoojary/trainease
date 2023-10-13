@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 public class CourseController {
     @Autowired
     CourseService courseService;

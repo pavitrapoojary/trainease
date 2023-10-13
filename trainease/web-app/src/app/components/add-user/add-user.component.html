@@ -5,9 +5,17 @@
         </div>
 
         <div class="col-md-9">
-            <div class="container">
-                <h1 style="padding-top: 30px;">Add a User</h1>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col-md-4">
+                    <button class="btn btn-primary create-user-btn" (click)="displayAddUserForm()">Add user using form</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary create-user-btn" (click)="displayExcelOption()">Add user using excel sheet</button>
+                </div>
+            </div>
 
+            <div class="container" *ngIf="displayForm">
+                <h1 style="padding-top: 30px;">Add a User</h1>
                 <form (submit)="onSubmit()">
                     <div class="row">
                         <div class="col-md-6">
@@ -64,9 +72,8 @@
                 </div>
             </div>
             <br>
-            <hr>
 
-            <div class="container">
+            <div class="container" *ngIf="displayExcel">
                 <h1 style="padding-top: 30px;">Add users by Uploading Excel file</h1>
 
                 <p>Please upload an Excel file with the following columns:</p>

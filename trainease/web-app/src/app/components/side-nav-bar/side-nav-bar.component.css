@@ -6,7 +6,7 @@
     padding-bottom: 15px;
 }
 #sidebar {
-    background-color: rgb(24, 24, 222);
+    background-color: #0097d6;
     height: 100%;
     width: 300px; 
     position: fixed;
@@ -24,7 +24,7 @@
 }
 
 #sidebar a:hover {
-    background-color: rgb(24, 24, 222); 
+    background-color: #0097d6; 
     color: white;
     font-weight: bolder
 }
@@ -33,4 +33,18 @@
 .content {
     margin-left: 320px; 
     padding: 20px;
+}
+
+.logout-button{
+    background-color: white;
+    color: #0097d6;
+    width: 100px;
+    margin-left: 100px;
+    text-align: center;
+    border-radius: 10px;
+}
+.logout-button:hover{
+    background-color: white;
+    color: #0097d6;
+    font-weight: bolder;
 }

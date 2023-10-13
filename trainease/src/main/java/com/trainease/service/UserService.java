@@ -1,7 +1,8 @@
 package com.trainease.service;
 
 import com.trainease.entity.User;
-import com.trainease.entity.UserRole;
+import com.trainease.dto.UserLoginData;
+import com.trainease.dto.UserRole;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -18,5 +19,9 @@ public interface UserService {
 
     String deleteUserByEmailId(String emailId);
     List<User> saveUsersFromExcel(MultipartFile excelFile) throws IOException;
+
+    UserLoginData getUserRoleAndBatch(String emailId);
+
+    User getUserProfile(String emailId);
 
 }

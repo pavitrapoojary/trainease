@@ -1,5 +1,7 @@
 package com.trainease.service;
 
+import com.trainease.dto.UserLoginData;
+import com.trainease.dto.UserRole;
 import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import com.trainease.repository.CourseRepository;
@@ -10,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +33,9 @@ class UserServiceImplTest {
 
     @Mock
     private CourseProgressRepository courseProgressRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -99,6 +106,7 @@ class UserServiceImplTest {
     void createAdminUser() {
         User newAdminUser = User.builder().emailId("admin@gmail.com").name("demo admin").role(UserRole.ADMIN).build();
         when(userRepository.save(newAdminUser)).thenReturn(newAdminUser);
+        when(passwordEncoder.encode("admin@gmail.com")).thenReturn("hashedPassword");
         User createdAdminUser = userService.createUser(newAdminUser);
         assertNotNull(createdAdminUser);
         assertEquals(newAdminUser.getEmailId(), createdAdminUser.getEmailId());
@@ -110,6 +118,7 @@ class UserServiceImplTest {
     void createSMEUser() {
         User newSmeUser = User.builder().emailId("admin@gmail.com").name("demo admin").role(UserRole.SME).build();
         when(userRepository.save(newSmeUser)).thenReturn(newSmeUser);
+        when(passwordEncoder.encode("admin@gmail.com")).thenReturn("hashedPassword");
         User createdSmeUser = userService.createUser(newSmeUser);
         assertNotNull(createdSmeUser);
         assertEquals(newSmeUser.getEmailId(), createdSmeUser.getEmailId());
@@ -129,6 +138,7 @@ class UserServiceImplTest {
 
         when(courseRepository.findAll()).thenReturn(courseList);
         when(userRepository.save(newTraineeUser)).thenReturn(newTraineeUser);
+        when(passwordEncoder.encode("trainee@gmail.com")).thenReturn("hashedPassword");
 
         User createdTraineeUser = userService.createUser(newTraineeUser);
 
@@ -210,6 +220,68 @@ class UserServiceImplTest {
         assertEquals("Invalid emailId.", exception.getMessage());
         verify(userRepository, never()).findById(any(String.class));
         verify(userRepository, never()).deleteById(any(String.class));
+    }
+
+    @Test
+    void getUserRoleAndBatch() {
+        String emailId = "user@email.com";
+        User user = User.builder()
+                .emailId(emailId)
+                .name("username")
+                .role(UserRole.ADMIN).build();
+
+        when(userRepository.findById(emailId)).thenReturn(Optional.ofNullable(user));
+
+        UserLoginData actualResult = userService.getUserRoleAndBatch(emailId);
+
+        assertNotNull(actualResult);
+        assertEquals(user.getEmailId(), actualResult.getEmailId());
+        assertEquals(user.getRole(), actualResult.getRole());
+        verify(userRepository).findById(emailId);
+    }
+
+    @Test
+    void getUserRoleAndBatchWhenUserDoesNotExist() {
+        String emailId = "user@email.com";
+
+        when(userRepository.findById(emailId)).thenReturn(Optional.empty());
+
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> {
+            userService.getUserRoleAndBatch(emailId);
+        });
+        assertEquals("User not found " + emailId, exception.getMessage());
+        verify(userRepository).findById(emailId);
+    }
+
+    @Test
+    void getUserProfile() {
+        String emailId = "user@email.com";
+        User user = User.builder()
+                .emailId(emailId)
+                .name("username")
+                .role(UserRole.ADMIN).build();
+
+        when(userRepository.findById(emailId)).thenReturn(Optional.ofNullable(user));
+
+        User actualResult = userService.getUserProfile(emailId);
+
+        assertNotNull(actualResult);
+        assertEquals(user.getEmailId(), actualResult.getEmailId());
+        assertEquals(user.getRole(), actualResult.getRole());
+        verify(userRepository).findById(emailId);
+    }
+
+    @Test
+    void getUserProfileWhenUserDoesNotExist() {
+        String emailId = "user@email.com";
+
+        when(userRepository.findById(emailId)).thenReturn(Optional.empty());
+
+        UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class, () -> {
+            userService.getUserProfile(emailId);
+        });
+        assertEquals("User does not exist : " + emailId, exception.getMessage());
+        verify(userRepository).findById(emailId);
     }
 
 }

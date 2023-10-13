@@ -1,5 +1,6 @@
 .batch-card{
-    border: 5px solid rgb(24, 24, 222); 
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
 }
 
 .edit-button mat-icon {

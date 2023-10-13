@@ -1,13 +1,13 @@
-.create-user-btn{
-    background-color: rgb(24, 24, 222);
+.create-user-btn {
+  background-color: #0097d6;
 }
 
 ul.inline-list {
-    list-style: none;
-    padding: 0;
-  }
+  list-style: none;
+  padding: 0;
+}
 
-  ul.inline-list li {
-    display: inline;
-    margin-right: 10px; /* Add some space between items */
-  }
+ul.inline-list li {
+  display: inline;
+  margin-right: 10px;
+}

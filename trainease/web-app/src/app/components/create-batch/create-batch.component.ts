@@ -12,25 +12,42 @@ export class CreateBatchComponent {
     batchId: '',
     batchName: '',
     batchDescription: '',
-    editing:false
+    editing: false
   };
   isBatchCreated: boolean = false;
   isBatchCreateError: boolean = false;
+  isBatchEmpty: boolean = false;
+  originalErrorMessage = 'Batch creation error : ';
   errorMessage: string = 'Batch creation error : ';
 
   constructor(private batchService: BatchService) { }
 
   onSubmit(): void {
-    this.batchService.createBatch(this.batch).subscribe(
-      (result) => {
-        console.log(JSON.stringify(result) + ": batch added");
-        this.isBatchCreated = true;
-      },
-      (error) => {
-        console.error("Error occurred while creating a training batch:", error);
-        this.errorMessage += error.error.message;
-        this.isBatchCreateError = true;
-      })
+    if (this.batch.batchName === '' ||
+      this.batch.batchId === '' ||
+      this.batch.batchDescription === '') {
+      this.isBatchEmpty = true;
+      setTimeout(() => {
+        this.isBatchEmpty = false;
+      }, 2000);
+    } else {
+      this.batchService.createBatch(this.batch).subscribe(
+        (result) => {
+          this.isBatchCreated = true;
+          setTimeout(() => {
+            this.isBatchCreated = false;
+          }, 2000);
+        },
+        (error) => {
+          this.errorMessage += error.error.message;
+          this.isBatchCreateError = true;
+          setTimeout(() => {
+            this.isBatchCreateError = false;
+          }, 2000);
+          
+        });
+        this.errorMessage = '' + this.originalErrorMessage;
+    }
   }
 
 }

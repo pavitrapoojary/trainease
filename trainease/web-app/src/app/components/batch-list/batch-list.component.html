@@ -8,22 +8,32 @@
             <div class="container">
                 <h1 style="padding-top: 30px;">Batch List</h1>
 
+                <div class="row" style="margin-top: 10px;">
+                    <p>Total training batches count : {{ totalBatchesCount }}</p>
+                </div>
+
                 <div class="row">
+
                     <div class="col-md-3 mb-3" *ngFor="let batch of batches">
+
                         <div class="card batch-card" style="width: 15rem;">
+
                             <div class="card-body">
+
                                 <div *ngIf="!batch.editing">
                                     <h2 class="card-title">{{ batch.batchId }}</h2>
                                     <h5 class="card-subtitle mb-2 text-body-secondary">{{ batch.batchName }}</h5>
                                     <p>{{ batch.batchDescription }}</p>
                                 </div>
+
                                 <div *ngIf="batch.editing">
                                     <input [(ngModel)]="batch.batchId" class="form-control mb-3" disabled/>
                                     <input [(ngModel)]="batch.batchName" class="form-control mb-3" />
                                     <input [(ngModel)]="batch.batchDescription" class="form-control mb-3" />
                                 </div>
+
                                 <div class="buttons">
-                                    <button mat-icon-button (click)="editBatch(batch)" class="btn btn-default btn-circle-edit edit-button">
+                                    <button mat-icon-button (click)="editBatch(batch)" *ngIf="!batch.editing" class="btn btn-default btn-circle-edit edit-button">
                                         <mat-icon>edit</mat-icon>
                                     </button>
                                     <button mat-icon-button (click)="saveBatch(batch)" *ngIf="batch.editing" class="btn btn-default btn-circle-save save-button">
@@ -33,13 +43,28 @@
                                         <mat-icon>cancel</mat-icon>
                                     </button>
                                 </div>
+
+                                
+
                             </div>
                         </div>
                     </div>
                     
-
-
                 </div>
+
+                <div *ngIf="updateSuccess" class="alert alert-success mt-3">
+                    Batch updated successfully!
+                </div>
+
+                <div *ngIf="nothingToUpdate" class="alert alert-warning mt-3">
+                    No changes being made in order to update the batch.
+                </div>
+
+                <div *ngIf="updateError" class="alert alert-danger mt-3">
+                    Batch name or description cannot be empty or blank.
+                </div>
+
+
             </div>
         </div>
     </div>

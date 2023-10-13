@@ -1,5 +1,6 @@
 package com.trainease.service;
 
+import com.trainease.dto.CourseStatus;
 import com.trainease.entity.*;
 import com.trainease.repository.CourseProgressRepository;
 import org.junit.jupiter.api.Test;

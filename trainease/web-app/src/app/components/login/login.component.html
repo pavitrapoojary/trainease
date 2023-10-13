@@ -1,0 +1,27 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="main">
+
+    <div class="trainease">
+
+      <form (ngSubmit)="onSubmit()" class="login-form">
+        <label aria-hidden="true">TrainEase</label>
+        <input type="text" id="username" name="username" [(ngModel)]="loginData.username" placeholder="Username"
+          required>
+        <input type="password" id="password" name="password" [(ngModel)]="loginData.password" placeholder="Password"
+          required>
+        <button style="width: 100px;" type="submit">Login</button>
+      </form>
+
+      <div class="row">
+        <h3 *ngIf="loginError" class="error-message">Incorrect Credentials</h3>
+        <h3 *ngIf="loginWarning" class="warning-message">Fill in both the fields</h3>
+      </div>
+
+    </div>
+
+  </div>
+</body>

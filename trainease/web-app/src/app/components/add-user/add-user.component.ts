@@ -10,6 +10,8 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./add-user.component.css']
 })
 export class AddUserComponent {
+  displayForm = false;
+  displayExcel = false;
   batches: Batch[] = [];
   selectedBatch: string = '';
   user: User = {
@@ -44,13 +46,17 @@ export class AddUserComponent {
     this.user.batch.batchId = this.selectedBatch;
     this.userService.addUser(this.user).subscribe(
       (result) => {
-        console.log(result + ": user added");
         this.isUserAddedByForm = true;
+        setTimeout(() => {
+          this.isUserAddedByForm = false;
+        }, 2000);
       },
       (error) => {
-        console.error("Error occurred while creating new user", error);
         this.errorMessageForm += error.error.message;
         this.isErrorOccurredByForm = true;
+        setTimeout(() => {
+          this.isErrorOccurredByForm = false;
+        }, 2000);
       });
   }
 
@@ -61,18 +67,32 @@ export class AddUserComponent {
       if (file) {
         this.userService.uploadExcelFile(file).subscribe(
           (result) => {
-            console.log("Users created from the excel file.", result);
             this.isUserAddedByExcel = true;
+            setTimeout(() => {
+              this.isUserAddedByExcel = false;
+            }, 2000);
           },
           (error) => {
-            console.error("Error occurred while uploading the file:", error);
             this.errorMessage += error.error.message;
             this.isErrorOccurredBySavingExcel = true;
+            setTimeout(() => {
+              this.isErrorOccurredBySavingExcel = false;
+            }, 2000);
 
           }
         );
       }
     }
+  }
+
+  displayAddUserForm() {
+    this.displayExcel = false;
+    this.displayForm = true;
+  }
+
+  displayExcelOption() {
+    this.displayForm = false;
+    this.displayExcel = true;
   }
 
 

@@ -5,10 +5,9 @@
         </div>
 
         <div class="col-md-9">
-            <div class="container">
-                <h1 style="padding-top: 30px;">Courses List</h1>
+            <div class="container mt-4">
 
-                <div class="col-md-6">
+                <div class="col-md-6" *ngIf="loggedInUserRole === 'ADMIN' || loggedInUserRole==='SME'">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="batchFilter">Training Batch ID:</label>
@@ -24,6 +23,10 @@
                     </div>
                 </div>
 
+                <div class="row" style="margin-top: 10px;">
+                    <p>Total courses count : {{ totalCoursesCount }}</p>
+                </div>
+
                 <div class="table-container">
 
                     <table class="table">
@@ -33,11 +36,11 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Link</th>
-                                <th>Duration</th>
+                                <th>Duration (Hours)</th>
                                 <th>Est. Start Date</th>
                                 <th>Est. End Date</th>
                                 <th>SMEs</th>
-                                <th>Actions</th>
+                                <th *ngIf="loggedInUserRole === 'ADMIN'">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,7 +65,7 @@
                                 </td>
 
                                 <td>
-                                    <ng-container *ngIf="!course.editing; else editCourseDescription">
+                                    <ng-container *ngIf="!course.editing; else editCourseDescription" >
                                         {{ course.description }}
                                     </ng-container>
                                     <ng-template #editCourseDescription>
@@ -81,14 +84,14 @@
 
                                 <td>
                                     <ng-container *ngIf="!course.editing; else editCourseDurationInHours">
-                                        {{ course.durationInHours }} hours
+                                        {{ course.durationInHours }}
                                     </ng-container>
                                     <ng-template #editCourseDurationInHours>
                                         <input [(ngModel)]="course.durationInHours" class="form-control" style="width: 50px;"/>
                                     </ng-template>
                                 </td>
 
-                                <td>
+                                <td style="width: 100px;">
                                     <ng-container *ngIf="!course.editing; else editCourseEstimatedStartDate">
                                         {{ course.estimatedStartDate | date:'dd-MM-yyyy' }}
                                     </ng-container>
@@ -97,7 +100,7 @@
                                     </ng-template>
                                 </td>
 
-                                <td>
+                                <td style="width: 100px;">
                                     <ng-container *ngIf="!course.editing; else editCourseEstimatedEndDate">
                                         {{ course.estimatedEndDate | date:'dd-MM-yyyy' }}
                                     </ng-container>
@@ -115,9 +118,9 @@
                                     </ng-template>
                                 </td>
 
-                                <td style="width: 150px;">
+                                <td style="width: 130px;" *ngIf="loggedInUserRole === 'ADMIN'">
 
-                                    <button type="button" class="btn btn-default btn-circle-edit edit-button"
+                                    <button type="button" class="btn btn-default btn-circle-edit edit-button" *ngIf="!course.editing"
                                         (click)="editCourse(course)">
                                         <mat-icon>edit</mat-icon>
                                     </button>

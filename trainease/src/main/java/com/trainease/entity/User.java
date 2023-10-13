@@ -1,5 +1,6 @@
 package com.trainease.entity;
 
+import com.trainease.dto.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,7 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "batch_id")
     private Batch batch;
+
+    @Column(name = "password")
+    private String password;
 }

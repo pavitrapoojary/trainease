@@ -11,10 +11,12 @@ import { ProgressService } from 'src/app/services/progress.service';
   styleUrls: ['./update-progress.component.css']
 })
 export class UpdateProgressComponent {
+  loggedInUserEmail = localStorage.getItem('username') || '';
   statuses = Object.values(Status);
-  selectedEmailId: string = '';
   courses: Course[] = [];
+  allCoursesProgress : CourseProgress[] = [];
   courseProgresses : CourseProgress[] = [];
+  totalCoursesCount = 0;
   originalCourseProgress: CourseProgress = {
     progressId: 0,
     user: {
@@ -57,14 +59,31 @@ export class UpdateProgressComponent {
     actualStartDate: new Date,
     actualEndDate: new Date,
     editing:false
-  }
+  };
+  options = [
+    {id: 'option1', value: 'ALL', label: 'ALL'},
+    {id: 'option2', value: 'TO_BE_STARTED', label: 'TO_BE_STARTED'},
+    {id: 'option3', value: 'IN_PROGRESS', label: 'IN_PROGRESS'},
+    {id: 'option4', value: 'COMPLETED', label: 'COMPLETED'}
+  ];
+
+  selectedValue: string = 'ALL';
 
   constructor(private progressService: ProgressService) { }
 
-  getCurrentCourseProgress() {
-    this.progressService.getCoursesProgressByTraineeEmailId(this.selectedEmailId).subscribe((data) => {
-      console.log(data);
-      this.courseProgresses = data;
+  ngOnInit(): void {
+    this.progressService.getCoursesProgressByTraineeEmailId(this.loggedInUserEmail).subscribe((data) => {
+      this.courseProgresses = data.sort((a, b) => {
+        const courseIdA = a.course.courseId.toLowerCase();
+        const courseIdB = b.course.courseId.toLowerCase();
+        return courseIdA.localeCompare(courseIdB, undefined, { numeric: true, sensitivity: 'base' });
+      });
+      this.allCoursesProgress = data.sort((a, b) => {
+        const courseIdA = a.course.courseId.toLowerCase();
+        const courseIdB = b.course.courseId.toLowerCase();
+        return courseIdA.localeCompare(courseIdB, undefined, { numeric: true, sensitivity: 'base' });
+      });
+      this.totalCoursesCount = this.courseProgresses.length;
     });
   }
 
@@ -81,6 +100,7 @@ export class UpdateProgressComponent {
       courseProgress = data;
     });
     courseProgress.editing = false;
+    this.onRadioChange(this.selectedValue);
   }
 
   cancelEdit(courseProgress:CourseProgress){
@@ -117,12 +137,23 @@ export class UpdateProgressComponent {
     }
   }
 
-  getActualDateTextColor(estDate: Date, actualDate: Date): string {
-    if (actualDate > estDate) {
-      return 'red';
-    } else {
-      return 'rgb(21, 158, 0)';
+  // getActualDateTextColor(estDate: Date, actualDate: Date): string {
+  //   if (actualDate > estDate) {
+  //     return 'red';
+  //   } else {
+  //     return 'rgb(21, 158, 0)';
+  //   }
+  // }
+
+  onRadioChange(value:string) {
+    console.log(value);
+    if(value==='ALL'){
+      this.courseProgresses = this.allCoursesProgress.filter(courseProgress => 
+        courseProgress.status==='TO_BE_STARTED' || courseProgress.status==='IN_PROGRESS' || courseProgress.status==='COMPLETED');
+    }else{
+      this.courseProgresses = this.allCoursesProgress.filter(courseProgress => courseProgress.status===value);
     }
+    this.totalCoursesCount = this.courseProgresses.length;
   }
 
 }

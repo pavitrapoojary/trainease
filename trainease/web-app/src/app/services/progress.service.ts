@@ -2,24 +2,27 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CourseProgress } from '../models/course-progress.model';
+import { environment } from 'src/environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProgressService {
-  private baseUrl='http://localhost:8080';
+  baseUrl = environment.baseUrl;
+  isProduction = environment.production;
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  getCoursesProgressByTraineeEmailId(emailId:string):Observable<CourseProgress[]>{
+  getCoursesProgressByTraineeEmailId(emailId: string): Observable<CourseProgress[]> {
     return this.http.get<CourseProgress[]>(`${this.baseUrl}/${emailId}/progress`);
   }
 
-  getCourseProgressByTraineeEmailIdAndCourseId(emailId:string,courseId:string):Observable<CourseProgress>{
+  getCourseProgressByTraineeEmailIdAndCourseId(emailId: string, courseId: string): Observable<CourseProgress> {
     return this.http.get<CourseProgress>(`${this.baseUrl}/progress/${emailId}/${courseId}`);
   }
 
-  updateCourseProgress(courseProgress:CourseProgress):Observable<CourseProgress>{
-    return this.http.put<CourseProgress>(`${this.baseUrl}/progress`,courseProgress);
+  updateCourseProgress(courseProgress: CourseProgress): Observable<CourseProgress> {
+    return this.http.put<CourseProgress>(`${this.baseUrl}/progress`, courseProgress);
   }
 }

@@ -11,9 +11,10 @@ import { CourseService } from 'src/app/services/course.service';
 })
 export class CourseListComponent {
   courses: Course[] = [];
+  totalCoursesCount = 0;
   batches: Batch[] = [];
   selectedBatch: string = '';
-  originalCourse:Course={
+  originalCourse: Course = {
     courseId: '',
     batch: {
       batchId: '',
@@ -29,19 +30,32 @@ export class CourseListComponent {
     estimatedEndDate: new Date,
     subjectMatterExpert: '',
     editing: false
-  }
+  };
+  loggedInUserRole = localStorage.getItem('role');
 
   constructor(private courseService: CourseService, private batchService: BatchService) { }
 
   ngOnInit(): void {
-    this.batchService.getAllBatches().subscribe((data) => {
-      this.batches = data;
-    })
+    if (this.loggedInUserRole === 'TRAINEE') {
+      let batchId = localStorage.getItem('batch');
+      if (batchId !== null) {
+        this.getCoursesByBatchId(batchId);
+      }
+    } else {
+      this.batchService.getAllBatches().subscribe((data) => {
+        this.batches = data;
+      });
+    }
   }
 
   getCoursesByBatchId(selectedBatch: string): void {
     this.courseService.getCoursesByBatchId(selectedBatch).subscribe((data) => {
-      this.courses = data;
+      this.courses = data.sort((a, b) => {
+        const courseIdA = a.courseId.toLowerCase();
+        const courseIdB = b.courseId.toLowerCase();
+        return courseIdA.localeCompare(courseIdB, undefined, { numeric: true, sensitivity: 'base' });
+      });
+      this.totalCoursesCount = this.courses.length;
     });
   }
 
@@ -59,21 +73,21 @@ export class CourseListComponent {
   }
 
   saveCourse(course: Course) {
-    this.courseService.updateCourse(course).subscribe((data)=>{
+    this.courseService.updateCourse(course).subscribe((data) => {
       course = data;
     });
     course.editing = false;
   }
 
   cancelEdit(course: Course) {
-    course.courseId = this.originalCourse.courseId ;
-    course.batch = this.originalCourse.batch ;
-    course.courseName = this.originalCourse.courseName ;
-    course.description = this.originalCourse.description ;
-    course.durationInHours = this.originalCourse.durationInHours ;
+    course.courseId = this.originalCourse.courseId;
+    course.batch = this.originalCourse.batch;
+    course.courseName = this.originalCourse.courseName;
+    course.description = this.originalCourse.description;
+    course.durationInHours = this.originalCourse.durationInHours;
     course.link = this.originalCourse.link;
-    course.estimatedStartDate = this.originalCourse.estimatedStartDate ;
-    course.estimatedEndDate = this.originalCourse.estimatedEndDate ;
+    course.estimatedStartDate = this.originalCourse.estimatedStartDate;
+    course.estimatedEndDate = this.originalCourse.estimatedEndDate;
     course.subjectMatterExpert = this.originalCourse.subjectMatterExpert;
     course.editing = false;
   }

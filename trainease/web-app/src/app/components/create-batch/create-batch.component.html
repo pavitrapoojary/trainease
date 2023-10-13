@@ -5,34 +5,50 @@
         </div>
 
         <div class="col-md-9">
+
             <div class="container">
                 <h1 style="padding-top: 30px;">Create a Training Batch</h1>
 
-                <form (submit)="onSubmit()">
-                    <div class="mb-3">
+                <form (submit)="onSubmit()" class="row" style="width: 70%;">
+                    <div class="mb-3 col">
                         <label for="batchId" class="form-label">Batch ID</label>
-                        <input type="text" class="form-control" id="batchId" [(ngModel)]="batch.batchId" name="batchId"required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="batchName" class="form-label">Batch Name</label>
-                        <input type="text" class="form-control" id="batchName" [(ngModel)]="batch.batchName" name="batchName"required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="batchDescription" class="form-label">Batch Description</label>
-                        <input type="text" class="form-control" id="batchDescription" [(ngModel)]="batch.batchDescription" name="batchDescription"required>
+                        <input type="text" class="form-control" id="batchId" [(ngModel)]="batch.batchId" name="batchId"
+                            required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary create-batch-btn">Create</button>
+                    <div class="mb-3 col">
+                        <label for="batchName" class="form-label">Batch Name</label>
+                        <input type="text" class="form-control" id="batchName" [(ngModel)]="batch.batchName"
+                            name="batchName" required>
+                    </div>
+
+                    <div class="mb-3 col-12">
+                        <label for="batchDescription" class="form-label">Batch Description</label>
+                        <input type="text" class="form-control" id="batchDescription"
+                            [(ngModel)]="batch.batchDescription" name="batchDescription" required>
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary create-batch-btn">Create</button>
+                    </div>
                 </form>
+
+
+
 
                 <div *ngIf="isBatchCreated" class="alert alert-success mt-3">
                     Batch created successfully!
+                </div>
+
+                <div *ngIf="isBatchEmpty" class="alert alert-warning mt-3">
+                    Fill in all batch details.
                 </div>
 
                 <div *ngIf="isBatchCreateError" class="alert alert-danger mt-3">
                     {{errorMessage}}
                 </div>
             </div>
+
         </div>
     </div>
 </div>

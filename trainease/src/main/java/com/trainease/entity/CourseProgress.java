@@ -1,5 +1,6 @@
 package com.trainease.entity;
 
+import com.trainease.dto.CourseStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

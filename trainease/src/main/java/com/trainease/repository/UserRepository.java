@@ -1,7 +1,7 @@
 package com.trainease.repository;
 
 import com.trainease.entity.User;
-import com.trainease.entity.UserRole;
+import com.trainease.dto.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +18,8 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query("SELECT u FROM User u " +
             "WHERE u.role = :role ")
     List<User>findByUserRole(@Param("role")UserRole role);
+
+    Long countByBatch_BatchId(String batchId);
+
+
 }

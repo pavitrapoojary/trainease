@@ -13,7 +13,7 @@
 
 .table thead th {
     text-align: center;
-    background-color: rgb(24, 24, 222);
+    background-color: #0097d6;
     color: white;
     font-size: 15px;
     padding: 10px;
@@ -33,7 +33,7 @@
     text-align: center;
     font-size: 12px;
     line-height: 1.42857;
-    background-color: rgb(24, 24, 222);
+    background-color: #0097d6;
 }
 
 .edit-button mat-icon {

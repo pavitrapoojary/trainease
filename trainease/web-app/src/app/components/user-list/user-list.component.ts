@@ -12,6 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 export class UserListComponent implements OnInit {
   userRoles = Object.values(UserRole);
   users: User[] = [];
+  totalUsersCount = 0;
   filteredUsers: User[] = [];
   selectedRole: string = '';
   selectedBatchId: string = '';
@@ -32,7 +33,11 @@ export class UserListComponent implements OnInit {
       editing: false
     },
     editing: false
-  }
+  };
+  updateSuccess = false;
+  nothingToUpdate = false;
+  updateError = false;
+  deleteSuccess = false;
 
   constructor(private userService: UserService, private batchService: BatchService) {
     this.fetchBatchIds();
@@ -45,6 +50,7 @@ export class UserListComponent implements OnInit {
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data) => {
       this.users = data;
+      this.totalUsersCount = this.users.length;
     });
   }
 
@@ -57,6 +63,7 @@ export class UserListComponent implements OnInit {
   getRoleSpecificUsers() {
     this.userService.getRoleSpecificUsers(this.selectedUserRole).subscribe((data) => {
       this.users = data;
+      this.totalUsersCount = this.users.length;
     });
     this.selectedBatch = '';
     this.selectedEmailId = '';
@@ -65,6 +72,7 @@ export class UserListComponent implements OnInit {
   getBatchSpecificTrainees() {
     this.userService.getBatchSpecificTrainees(this.selectedBatch).subscribe((data) => {
       this.users = data;
+      this.totalUsersCount = this.users.length;
     });
     this.selectedUserRole = '';
     this.selectedEmailId = '';
@@ -74,6 +82,7 @@ export class UserListComponent implements OnInit {
     this.userService.getUserByEmailId(this.selectedEmailId).subscribe((data) => {
       this.users = [];
       this.users.push(data);
+      this.totalUsersCount = this.users.length;
     });
     this.selectedUserRole = '';
     this.selectedBatch = '';
@@ -81,7 +90,11 @@ export class UserListComponent implements OnInit {
 
   deleteUser(user: User) {
     this.userService.deleteUserByEmailId(user.emailId).subscribe((data) => {
-      console.log(data);
+      this.deleteSuccess = true;
+      setTimeout(() => {
+        this.deleteSuccess = false;
+      }, 2000);
+
       this.getAllUsers();
     });
 
@@ -96,13 +109,38 @@ export class UserListComponent implements OnInit {
   }
 
   saveUser(user: User) {
-    if(user.role === UserRole.TRAINEE){
-      user.batch.batchId = this.selectedBatch;
+    if (user.name === '') {
+
+      this.updateError = true;
+      this.nothingToUpdate = false;
+      this.updateSuccess = false;
+      setTimeout(() => {
+        this.updateError = false;
+      }, 2000);
+
+    } else if (user.name === this.originalUser.name) {
+
+      this.nothingToUpdate = true
+      this.updateError = false;
+      this.updateSuccess = false;
+      setTimeout(() => {
+        this.nothingToUpdate = false;
+      }, 2000);
+
+    }else {
+
+      this.userService.updateUser(user).subscribe((data) => {
+        user = data;
+        this.updateError = false;
+        this.nothingToUpdate = false;
+        this.updateSuccess = true;
+        setTimeout(() => {
+          this.updateSuccess = false;
+        }, 2000);
+      });
+      user.editing = false;
+
     }
-    this.userService.updateUser(user).subscribe((data) => {
-      user = data;
-    });
-    user.editing = false;
   }
 
   cancelEdit(user: User) {
@@ -110,6 +148,9 @@ export class UserListComponent implements OnInit {
     user.role = this.originalUser.role;
     user.batch = this.originalUser.batch;
     user.editing = false;
+    this.updateError = false;
+    this.updateSuccess = false;
+    this.nothingToUpdate = false;
   }
 
   sortByName(): void {

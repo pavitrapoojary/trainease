@@ -1,0 +1,87 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3">
+      <app-side-nav-bar></app-side-nav-bar>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="row mb-2" style="padding-top: 20px;">
+
+        <div class="col-md-4">
+          <div class="row">
+            <div class="col-md-8">
+              <label for="batchFilter">Training Batch ID:</label>
+              <select class="form-select" id="batchFilter" [(ngModel)]="selectedBatch">
+                <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-4" style="margin-top: 20px;">
+              <button type="button" class="btn btn-default btn-circle-search search-button"
+                (click)="getBatchProgress()">
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3" style="margin-top: 30px;">
+          <p>Total trainees count : {{ totalTraineesCount }} </p>
+        </div>
+
+        <div class="col-md-3" style="margin-top: 30px;">
+          <p>Total courses count : {{ totalCoursesCount }} </p>
+        </div>
+
+        <div class="col-md-2">
+          <table style="border: 1px solid black;">
+            <tbody>
+              <tr style="border: 1px solid black;">
+                <td><span class="icon" style="font-size: 20px;">!!</span></td>
+                <td>To Be Started</td>
+              </tr>
+              <tr style="border: 1px solid black;">
+                <td><span class="icon" style="font-size: 20px;">⌛</span></td>
+                <td>In Progress</td>
+              </tr>
+              <tr style="border: 1px solid black;">
+                <td><span class="icon" style="font-size: 20px;">✅</span></td>
+                <td>Completed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+
+      </div>
+
+
+      <div class="row" *ngIf="showTable" style="padding-top: 20px;">
+        <div class="table-container">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th class="sticky-column">Email ID</th>
+                <th *ngFor="let courseProgress of batchProgressList[0]?.courseProgressStatusList">
+                  {{ courseProgress.courseName }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let batchProgress of batchProgressList">
+                <td class="sticky-column">{{ batchProgress.emailId }}</td>
+                <td *ngFor="let courseProgress of batchProgress.courseProgressStatusList"
+                  [ngClass]="{'tobestarted': courseProgress.courseStatus === 'TO_BE_STARTED', 'inprogress': courseProgress.courseStatus === 'IN_PROGRESS', 'completed': courseProgress.courseStatus === 'COMPLETED'}">
+                  <!-- {{ courseProgress.courseStatus }} -->
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

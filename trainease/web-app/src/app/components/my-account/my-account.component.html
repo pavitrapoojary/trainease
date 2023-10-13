@@ -1,0 +1,105 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <app-side-nav-bar></app-side-nav-bar>
+        </div>
+
+        <div class="col-md-9">
+
+            <div class="container">
+
+                <h1 class="page-title">My Account</h1>
+
+                <div class="row">
+
+                    <div class="card user-card">
+
+                        <div class="card-body">
+
+                            <div *ngIf="!loggedInUserProfile.editing">
+
+                                <h2 class="user-name">{{ loggedInUserProfile.name }}</h2>
+                                <p class="user-info">{{ loggedInUserProfile.emailId }}</p>
+                                <p class="user-info">
+                                    <span class="role-button"
+                                        [ngClass]="{'admin': loggedInUserProfile.role === 'ADMIN', 'trainee': loggedInUserProfile.role === 'TRAINEE', 'sme': loggedInUserProfile.role === 'SME'}">
+                                        {{ loggedInUserProfile.role }}
+                                    </span>
+                                </p>
+
+                                <div *ngIf="loggedInUserProfile.role === 'TRAINEE'" class="batch-info">
+                                    <hr>
+                                    <p>Training batch details:</p>
+                                    <p>{{ loggedInUserProfile.batch.batchId }}</p>
+                                    <p>{{ loggedInUserProfile.batch.batchName }}</p>
+                                    <p>{{ loggedInUserProfile.batch.batchDescription }}</p>
+                                </div>
+
+                            </div>
+
+                            <div *ngIf="loggedInUserProfile.editing" class="editing-section">
+
+                                <input [(ngModel)]="loggedInUserProfile.name" class="form-control mb-3" />
+
+                                <input [(ngModel)]="loggedInUserProfile.emailId" class="form-control mb-3" disabled />
+
+                                <input [(ngModel)]="loggedInUserProfile.role" class="form-control mb-3" disabled />
+
+                                <div *ngIf="loggedInUserProfile.role === 'TRAINEE'" class="batch-info">
+
+                                    <input [(ngModel)]="loggedInUserProfile.batch.batchId" class="form-control mb-3"
+                                        disabled />
+
+                                    <input [(ngModel)]="loggedInUserProfile.batch.batchName" class="form-control mb-3"
+                                        disabled />
+
+                                    <input [(ngModel)]="loggedInUserProfile.batch.batchDescription"
+                                        class="form-control mb-3" disabled />
+
+                                </div>
+
+                            </div>
+
+                            <div class="user-buttons">
+
+                                <button mat-icon-button (click)="editUser(loggedInUserProfile)"
+                                    *ngIf="!loggedInUserProfile.editing"
+                                    class="btn btn-default btn-circle-edit edit-button">
+                                    <mat-icon>edit</mat-icon>
+                                </button>
+
+                                <button mat-icon-button (click)="saveUser(loggedInUserProfile)"
+                                    *ngIf="loggedInUserProfile.editing"
+                                    class="btn btn-default btn-circle-save save-button">
+                                    <mat-icon>save</mat-icon>
+                                </button>
+
+                                <button mat-icon-button (click)="cancelEdit(loggedInUserProfile)"
+                                    *ngIf="loggedInUserProfile.editing"
+                                    class="btn btn-default btn-circle-cancel cancel-button">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div *ngIf="updateSuccess" class="alert alert-success mt-3">
+                    User Profile updated successfully!
+                </div>
+
+                <div *ngIf="nothingToUpdate" class="alert alert-warning mt-3">
+                    No changes being made in order to update user profile.
+                </div>
+
+                <div *ngIf="updateError" class="alert alert-danger mt-3">
+                    User name cannot be empty or blank.
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

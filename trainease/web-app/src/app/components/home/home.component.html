@@ -3,8 +3,172 @@
         <div class="col-md-3">
             <app-side-nav-bar></app-side-nav-bar>
         </div>
-        <div class="col-md-9">
+        
+        <div class="col-md-9" *ngIf="loggedInUserRole === 'ADMIN' || loggedInUserRole==='SME'">
+
+            <div class="row">
+
+                <div class="col-md-2">
+                    <br>
+                    <label for="batchFilter">Training Batch ID:</label>
+                    <select class="form-select" id="batchFilter" [(ngModel)]="selectedBatch">
+                        <option *ngFor="let batch of batches" [value]="batch.batchId">{{ batch.batchId }}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1" style="margin-top: 20px;">
+                    <br>
+                    <button type="button" class="btn btn-default btn-circle-search search-button"
+                        (click)="getBatchWiseReport(selectedBatch)">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+
+                <div class="col-md-2" style="margin-left: 20px;">
+                    <br>
+                    <label for="courseFilter">Course:</label>
+                    <select class="form-select" id="courseFilter" [(ngModel)]="selectedCourse">
+                        <option *ngFor="let course of courses" [value]="course.courseId">{{ course.courseName}}</option>
+                    </select>
+                </div>
+
+                <div class="col-md-1" style="margin-top: 20px;">
+                    <br>
+                    <button type="button" class="btn btn-default btn-circle-search search-button"
+                        (click)="getCourseWiseReport(selectedCourse)">
+                        <mat-icon>search</mat-icon>
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="row">
+
+                <div class="col-md-4 mb-1">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 230px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>BATCH DESCRIPTION</h2>
+                                <h3>{{ selectedBatchDescription }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 230px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>COURSE COUNT</h2>
+                                <br>
+                                <h1 class="large-number">{{ totalCoursesCount }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-1">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 230px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>TRAINEES COUNT</h2>
+                                <br>
+                                <h1 class="large-number">{{ totalTraineesCount }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 300px;">
+                        <div class="card-body">
+                            <div class="dashboard-item chart-container">
+                                <h2>COURSE WISE PROGRESS STATUS</h2>
+                                <canvas id="courseWiseStatusChart">{{ courseWiseStatusChart }}</canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 300px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>COURSE FEEDBACK</h2>
+                                <ng-container *ngIf="feedbackList.length > 0; else noFeedback">
+                                    <ul *ngFor="let feedback of feedbackList">
+                                        <li>{{ feedback }}</li>
+                                    </ul>
+                                </ng-container>
+                                <ng-template #noFeedback>
+                                    <p>No Feedback Received</p>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <router-outlet></router-outlet>
+        </div>
+
+
+        <div class="col-md-9" *ngIf="loggedInUserRole === 'TRAINEE'">
+
+            <div class="row">
+                <div class="col-md-6 mb-1">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 230px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>BATCH ID</h2>
+                                <br>
+                                <h1 class="large-number">{{ selectedBatchId }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-1">
+                    <br><br>
+                    <div class="card batch-card" style="min-height: 230px;">
+                        <div class="card-body">
+                            <div class="dashboard-item">
+                                <h2>COURSE COUNT</h2>
+                                <br>
+                                <h1 class="large-number">{{ totalCoursesCount }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <br><br>
+                        <div class="card batch-card" style="min-height: 300px;">
+                            <div class="card-body">
+                                <div class="dashboard-item chart-container">
+                                    <h2>COURSE PROGRESS STATUS</h2>
+                                    <canvas id="courseStatusChart">{{ courseStatusChart }}</canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <router-outlet></router-outlet>
+
         </div>
     </div>
 </div>

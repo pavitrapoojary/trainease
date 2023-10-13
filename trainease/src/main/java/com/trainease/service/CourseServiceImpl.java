@@ -1,8 +1,7 @@
 package com.trainease.service;
 
-import com.trainease.ExcelParser;
+import com.trainease.helper.ExcelParser;
 import com.trainease.entity.Course;
-import com.trainease.entity.User;
 import com.trainease.repository.CourseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
@@ -10,9 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.trainease.helper.S3FileUploader.uploadFileToS3;
 
 @Service
 @AllArgsConstructor
@@ -34,6 +36,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public Course createCourse(Course course) {
+        if (courseRepository.findById(course.getCourseId()).isPresent()) {
+            throw new IllegalArgumentException("Course already exists with the given course ID.");
+        }
         return courseRepository.save(course);
     }
 
@@ -59,7 +64,14 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public List<Course> createCourses(List<Course> courses) {
-        return courseRepository.saveAll(courses);
+        List<Course> newCoursesToBeAdded = new ArrayList<>();
+        for (Course course : courses) {
+            Optional<Course> existingCourse = courseRepository.findById(course.getCourseId());
+            if (existingCourse.isEmpty()) {
+                newCoursesToBeAdded.add(course);
+            }
+        }
+        return courseRepository.saveAll(newCoursesToBeAdded);
     }
 
 
@@ -75,8 +87,8 @@ public class CourseServiceImpl implements CourseService {
     @Override
     public List<Course> saveCoursesFromExcel(MultipartFile excelFile) throws IOException {
         List<Course> courses = ExcelParser.parseCourseExcel(excelFile.getInputStream());
-        courseRepository.saveAll(courses);
-        return courses;
+        uploadFileToS3(excelFile, "courses/");
+        return courseRepository.saveAll(courses);
     }
 
 }

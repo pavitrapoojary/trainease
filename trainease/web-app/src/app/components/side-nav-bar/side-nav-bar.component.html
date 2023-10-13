@@ -1,12 +1,11 @@
 <div class="accordion" id="sidebar">
 
-    <a href="#" routerLink="/">
+    <a href="#" routerLink="/home">
         <h2 id="trainease-heading">IdeaS TrainEase</h2>
     </a>
 
-
     <!-- User Management -->
-    <div class="accordion-item">
+    <div class="accordion-item" >
         <h2 class="accordion-header" id="userManagement">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#userCollapse" aria-expanded="false" aria-controls="userCollapse">
@@ -17,14 +16,16 @@
             data-bs-parent="#sidebar">
             <div class="accordion-body">
                 <ul class="list-unstyled">
-                    <li><a href="#" routerLink="/user-list">View Users</a></li>
-                    <li><a href="#" routerLink="/add-user">Create a User</a></li>
+                    <li><a href="#" routerLink="/my-account">My Account</a></li>
+                    <li><a href="#" routerLink="/user-list" *ngIf="loggedInUserRole === 'ADMIN'">View Users</a></li>
+                    <li><a href="#" routerLink="/add-user" *ngIf="loggedInUserRole === 'ADMIN'">Create a User</a></li>
                 </ul>
             </div>
         </div>
     </div>
+
     <!-- Training Batch Management -->
-    <div class="accordion-item">
+    <div class="accordion-item" *ngIf="loggedInUserRole === 'ADMIN'">
         <h2 class="accordion-header" id="batchManagement">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                 data-bs-target="#batchCollapse" aria-expanded="false" aria-controls="batchCollapse">
@@ -41,6 +42,7 @@
             </div>
         </div>
     </div>
+
     <!-- Course Management -->
     <div class="accordion-item">
         <h2 class="accordion-header" id="courseManagement">
@@ -54,11 +56,12 @@
             <div class="accordion-body">
                 <ul class="list-unstyled">
                     <li><a href="#" routerLink="/course-list">View Courses</a></li>
-                    <li><a href="#" routerLink="/create-course">Create a Course</a></li>
+                    <li><a href="#" routerLink="/create-course" *ngIf="loggedInUserRole === 'ADMIN'">Create a Course</a></li>
                 </ul>
             </div>
         </div>
     </div>
+
     <!-- Track Progress -->
     <div class="accordion-item">
         <h2 class="accordion-header" id="progressManagement">
@@ -71,10 +74,18 @@
             data-bs-parent="#sidebar">
             <div class="accordion-body">
                 <ul class="list-unstyled">
-                    <li><a href="#" routerLink="/track-progress">ADMIN: Track Progress</a></li>
-                    <li><a href="#" routerLink="/update-progress">TRAINEE: Update Progress</a></li>
+                    <li><a href="#" routerLink="/track-batch-progress" *ngIf="loggedInUserRole === 'ADMIN' || loggedInUserRole==='SME'">Track Batch Progress</a></li>
+                    <li><a href="#" routerLink="/track-progress" *ngIf="loggedInUserRole === 'ADMIN' || loggedInUserRole==='SME'">Track Trainee Progress</a></li>
+                    <li><a href="#" routerLink="/update-progress" *ngIf="loggedInUserRole === 'TRAINEE'">Track & Update Progress</a></li>
                 </ul>
             </div>
         </div>
     </div>
+
+    <div>
+        <br><br>
+        <a (click)="logout()" class="logout-button">Logout</a>
+    </div>
+
 </div>
+

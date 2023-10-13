@@ -5,7 +5,16 @@
         </div>
 
         <div class="col-md-9">
-            <div class="container">
+            <div class="row" style="margin-top: 30px;">
+                <div class="col-md-4">
+                    <button class="btn btn-primary create-course-btn" (click)="displayAddCourseForm()">Add course using form</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-primary create-course-btn" (click)="displayExcelOption()">Add course using excel sheet</button>
+                </div>
+            </div>
+
+            <div class="container" *ngIf="displayForm">
                 <h1 style="padding-top: 30px;">Create a course</h1>
 
                 <form (submit)="onSubmit()">
@@ -92,9 +101,7 @@
 
             </div>
 
-            <hr>
-
-            <div class="container">
+            <div class="container" *ngIf="displayExcel">
                 <h1 style="padding-top: 30px;">Create courses by Uploading Excel file</h1>
                 <p>Please upload an Excel file with the following columns:</p>
                 <ul> 
@@ -118,7 +125,7 @@
                 </form>
 
                 <div *ngIf="isCourseAddedByExcel" class="alert alert-success mt-3">
-                    User added successfully!
+                    Course added successfully!
                 </div>
 
                 <div *ngIf="isErrorOccurredBySavingExcel" class="alert alert-danger mt-3">
